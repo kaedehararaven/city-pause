@@ -21,7 +21,7 @@ Phase 0 已建立 `src/` 前端、`server/` 后端、基础测试和 `package.js
 
 | 分类 | 含义与处理 |
 | --- | --- |
-| `confirmed` | 已根据官方文档并通过真实接口测试确认的地图事实；目前没有此类已验证字段。 |
+| `confirmed` | 已根据官方文档并通过真实接口测试确认的地图事实；当前 JSAPI `LocalResultPoi` 已确认 `uid`、`title`、`point`，但正式 `MapPOI` 尚未定型。 |
 | `optional` | 能力可能给出但可缺失；只有实测后才列入真实 Contract。 |
 | `derived` | 基于已知输入及可靠地图事实确定性计算，例如剩余停留时间。 |
 | `mock-only` | Demo 数据；须携带清晰来源标识，不能冒充真实 POI 或路线。 |
@@ -31,9 +31,9 @@ Phase 0 已建立 `src/` 前端、`server/` 后端、基础测试和 `package.js
 
 ## 当前能力状态
 
-**CONFIRMED：** 浏览器端和服务端 AK 已由用户准备，所需地图服务已开通；两名开发者均在 Codex 主工程中协作。浏览器端已通过官方 JSAPI Loader 加载 JSAPI 4.0，并以 BD-09 坐标初始化开发阶段默认中心；真实浏览器中已验证地图显示、拖动、缩放、刷新重新初始化，以及 Browser AK 缺失时的错误状态。该状态不代表 POI、路线等业务接口或响应字段已经测试通过。
+**CONFIRMED：** 浏览器端和服务端 AK 已由用户准备，所需地图服务已开通；两名开发者均在 Codex 主工程中协作。浏览器端已通过官方 JSAPI Loader 加载 JSAPI 4.0，并以 BD-09 坐标初始化开发阶段默认中心；真实浏览器中已验证地图显示、拖动、缩放、刷新重新初始化，以及 Browser AK 缺失时的错误状态。Phase 1B 已真实验证一次成功定位、当前位置 Marker、以定位点为中心的 1500 米“公园” `LocalSearch`，以及权限拒绝和超时失败状态。`LocalResultPoi` 的 `uid`、`title`、`point` 同时有官方定义与真实返回证据；详细记录见 `docs/PHASE_1B_VALIDATION.md`。
 
-**UNVERIFIED：** 定位、POI 搜索及详情、步行时间/距离、路线、Marker/绘制、非 BD-09 坐标转换、实际业务响应字段、配额及缓存策略。B 线在 Codex 中按小粒度实现，并以官方文档和真实请求验证。
+**UNVERIFIED：** POI 详情的跨地点稳定性、步行时间/距离、路线、非 BD-09 坐标转换、定位服务不可用/浏览器不支持分支、配额及缓存策略。B 线在 Codex 中按小粒度实现，并以官方文档和真实请求验证。
 
 ## 密钥边界
 

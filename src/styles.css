@@ -13,10 +13,17 @@ body {
   box-sizing: border-box;
 }
 
-.map-panel {
-  width: min(1120px, calc(100% - 2rem));
+.development-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 1rem;
+  width: min(1440px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 1.5rem 0 2rem;
+}
+
+.map-panel {
+  min-width: 0;
 }
 
 .map-panel__header {
@@ -105,6 +112,116 @@ h1 {
   font-size: 0.85rem;
 }
 
+.probe-panel {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  padding-top: 4.8rem;
+}
+
+.probe-card {
+  padding: 1rem;
+  border: 1px solid #d8ded9;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgb(30 53 39 / 8%);
+}
+
+.probe-card__heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.probe-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.probe-card p {
+  color: #536058;
+  line-height: 1.55;
+}
+
+.probe-card button {
+  width: 100%;
+  padding: 0.72rem 1rem;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #315943;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.probe-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.probe-meta {
+  font-size: 0.85rem;
+}
+
+.status-chip {
+  padding: 0.28rem 0.5rem;
+  border-radius: 999px;
+  color: #59645d;
+  background: #edf0ed;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.status-chip--success {
+  color: #23603b;
+  background: #e4f2e8;
+}
+
+.status-chip--error,
+.status-chip--denied,
+.status-chip--timeout,
+.status-chip--unavailable,
+.status-chip--unsupported {
+  color: #8a302b;
+  background: #fae8e6;
+}
+
+.raw-fields {
+  padding: 0.65rem 0;
+  border-top: 1px solid #e5e9e6;
+  border-bottom: 1px solid #e5e9e6;
+  font-size: 0.82rem;
+}
+
+.raw-fields code {
+  display: block;
+  margin-top: 0.55rem;
+  overflow-wrap: anywhere;
+  color: #536058;
+  line-height: 1.5;
+}
+
+.poi-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding-left: 1.4rem;
+}
+
+.poi-list li {
+  padding-left: 0.2rem;
+}
+
+.poi-list span {
+  display: block;
+  margin-top: 0.22rem;
+  color: #667169;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -112,6 +229,10 @@ h1 {
 }
 
 @media (max-width: 640px) {
+  .development-page {
+    display: block;
+  }
+
   .map-panel__header {
     align-items: start;
     flex-direction: column;
@@ -120,5 +241,9 @@ h1 {
   .map-shell {
     min-height: 420px;
     height: 68vh;
+  }
+
+  .probe-panel {
+    padding-top: 1rem;
   }
 }
