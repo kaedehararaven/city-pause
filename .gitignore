@@ -1,0 +1,21 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local secret files
+*.pem
+*.key
+secrets/
+
+# Dependencies and generated client output
+node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+server-dist/
+
+# macOS metadata
+.DS_Store
