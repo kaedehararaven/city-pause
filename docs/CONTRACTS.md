@@ -111,3 +111,20 @@ Browser AK 只用于浏览器 JSAPI。需要 WebAPI 的路线和详情请求必�
 ## 变更约定
 
 新增字段前必须记录来源、optional/unknown 表现和真实验证证据。跨模块语义变更由 A/B 共同确认；不得为了单线实现方便私自改变另一线依赖的 Contract。
+
+## A2 Search Policy v0.1 — CONTRACT_PROPOSAL
+
+A-owned canonical proposal 位于 `src/contracts/search.ts`，构建函数为 `src/recommendation/searchPolicy.ts` 的 `buildSearchPolicy(intent)`。
+这是已实现、待 A/B 确认消费方式的发现策略，不是已接入的地图接口。当前 Planner / REAL pipeline 保持上面的实际数据流；本阶段不调用它触发搜索。
+
+目标数据流：`UserIntent → SearchPolicy → [B Candidate Discovery] → MapPOI / RouteResult → hard constraints → scoring → Recommendation`。
+
+- `SearchPolicy`：`version: "0.1"`、`availableMinutes`、`entries`。
+- Entry 只有 `category`、`priority: high | medium | low`、确定性 `reason`。
+- Category 仅为 `bookstore | mall | cafe | dessert | park`，是产品发现类别，不是百度分类、keyword 或 POI 属性。
+- `availableMinutes` 传递用户预算，不表示搜索半径或允许移动时长；无位置、POI、路线或原始响应。
+- entries 顺序固定以便稳定序列化，同级没有隐含名次；空数组合法，表示所有支持类别都被明确排除，不能回退成全部搜索。
+- 高优先级只用于发现，不能覆盖推荐层的时间、消费或类别 hard constraints；搜索结果不自动获得 kind/free/quiet/indoor 等属性。
+- 规则与已知限制见 `docs/PHASE_A2_SEARCH_POLICY.md`。未修改 UserIntent、MapPOI、RouteResult，也未修改默认 open_ended。
+
+B 待确认：如何把产品类别映射到经过验证的搜索请求；同级检索的额度分配和失败处理；结果去重与类别来源的表示。此提案不承诺五类别已实测、不制定关键词/半径/并发数，也不要求现在查询真实 API。
