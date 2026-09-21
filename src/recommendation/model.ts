@@ -6,6 +6,9 @@ import type {
   SuccessfulRouteResult,
 } from "../contracts/map";
 
+import type { DiscoveredCandidate } from "../contracts/discovery";
+import type { ScoreTrace } from "./utility";
+
 export type ReturnMode = "open_ended" | "return_to_start";
 
 export type Activity = "rest" | "walk" | "explore";
@@ -43,6 +46,8 @@ export type CandidateData = {
   origin: RouteEndpoint & { name: string };
   places: CandidatePlace[];
   routes: RouteResult[];
+  // Discovery provenance, separate from provider facts. Optional for legacy callers.
+  discoveredCandidates?: DiscoveredCandidate[];
 };
 export type CandidateProvider = {
   source: MapDataSource;
@@ -74,4 +79,5 @@ export type Recommendation = Omit<CandidatePlan, "categoryCount"> & {
   strategyId: "easy" | "balanced" | "explore";
   strategyLabel: string;
   strategyReason: string;
+  scoreTrace?: ScoreTrace;
 };

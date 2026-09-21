@@ -1,3 +1,5 @@
+import { scorePlan, qualityGate, qualityThreshold, selectDiverse } from "./utility";
+import type { ScoredPlan } from "./utility";
 import { isSuccessfulRoute, walkingMinutesFromSeconds } from "../contracts/map";
 import type { SuccessfulRouteResult } from "../contracts/map";
 import type { CandidateData, CandidatePlace, CandidatePlan, Recommendation, UserIntent, PlanStep } from "./model";
@@ -129,32 +131,32 @@ export function buildRecommendations(intent: UserIntent, data: CandidateData): R
   if (intent.activity !== "rest") for (const first of places) for (const second of places) {
     if (first.providerId !== second.providerId) add([first, second]);
   }
-  const order = (strategy: StrategyId, items: CandidatePlan[]) => items.slice().sort((first, second) => {
-    const priority = (plan: CandidatePlan) => strategy === "easy" ?
-      [plan.walkingMinutes, -plan.stayMinutes, plan.places.length] : strategy === "balanced" ?
-      intent.activity === "rest" ? [-plan.stayMinutes, plan.walkingMinutes] :
-        [plan.places.length === 2 ? 0 : 1, Math.abs(plan.walkingMinutes - plan.stayMinutes), plan.walkingMinutes] :
-      intent.activity === "rest" ? [plan.walkingMinutes, -plan.stayMinutes] :
-        [plan.categoryCount === 2 ? 0 : 1, plan.places.length === 2 ? 0 : 1, plan.walkingMinutes];
-    const left = priority(first), right = priority(second);
-    for (let index = 0; index < left.length; index++) if (left[index] !== right[index]) return left[index] - right[index];
-    return first.id.localeCompare(second.id, "zh-CN");
-  });
+  // Only feasible CandidatePlans reach scoring. No category preference is a hard filter.
+  const scored = candidates.map(plan => scorePlan(plan, intent, data));
+  const eligible = qualityGate(scored);
+  const threshold = qualityThreshold(scored);
+  const selected: ScoredPlan[] = [];
   const chosen: Recommendation[] = [];
-  const used = new Set<string>();
-  const combination = (plan: CandidatePlan) => JSON.stringify(plan.places.map(place => place.providerId).sort());
   for (const strategy of intent.activity === "rest" ? restStrategies : strategies) {
-    const best = order(strategy.id, candidates.filter((plan) => !used.has(combination(plan))))[0];
-    if (!best) continue;
-    used.add(combination(best));
-    const { categoryCount: _categoryCount, ...recommendation } = best;
+    const pick = selectDiverse(eligible, selected, strategy.id, intent);
+    if (!pick) continue;
+    const { item, strategyAdjustment, diversityAdjustment, selectionScore } = pick;
+    selected.push(item);
+    const { categoryCount: _categoryCount, ...recommendation } = item.plan;
     void _categoryCount;
-    const reason = best.source === "real" && best.places.length === 1 && strategy.id !== "easy"
-      ? strategy.id === "balanced"
-        ? "本次安排一个地点，步行以外的时间用于停留与缓冲"
-        : "提供另一处路线与预算均已核对的可行地点"
-      : strategy.reason;
-    chosen.push({ ...recommendation, strategyId: strategy.id, strategyLabel: strategy.label, strategyReason: reason });
+    chosen.push({
+      ...recommendation, strategyId: strategy.id, strategyLabel: strategy.label,
+      strategyReason: `综合偏好匹配、活动时间与移动负担，在质量门槛内比较方案差异`,
+      scoreTrace: {
+        version: "0.2", hardConstraints: "passed", categories: item.categories,
+        categorySource: item.categorySource, components: item.components,
+        preferenceContribution: 40 * item.components.preference,
+        activityContribution: 30 * item.components.activity,
+        mobilityContribution: -20 * item.components.mobility,
+        baseUtility: item.utility, qualityThreshold: threshold,
+        strategyAdjustment, diversityAdjustment, selectionScore,
+      },
+    });
   }
   return chosen;
 }

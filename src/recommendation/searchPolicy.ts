@@ -12,7 +12,7 @@ const rules: Record<Profile, { priorities: readonly SearchPriority[]; reason: st
 };
 const activityProfile = { rest: "rest", walk: "walking", explore: "browsing" } as const;
 
-function profileFor(intent: UserIntent): Profile {
+export function profileFor(intent: UserIntent): Profile {
   // Explicit structured choices retain the precedence used by the current Planner.
   if (intent.source.activity === "button" || intent.source.activity === "form") {
     return activityProfile[intent.activity];
