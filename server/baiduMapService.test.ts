@@ -56,9 +56,13 @@ describe("adaptWalkingRoute", () => {
   });
 
   it("rejects a successful response without a route", () => {
-    expect(() => adaptWalkingRoute({ status: 0, result: { routes: [] } })).toThrow(
-      "No walking route returned",
-    );
+    expect.assertions(2);
+    try {
+      adaptWalkingRoute({ status: 0, result: { routes: [] } });
+    } catch (error) {
+      expect(error).toBeInstanceOf(BaiduProviderError);
+      expect((error as BaiduProviderError).routeStatus).toBe("no_route");
+    }
   });
 
   it("preserves a provider error status without its raw message", () => {

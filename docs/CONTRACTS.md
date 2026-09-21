@@ -1,44 +1,113 @@
-# 城市暂停键 Contract · v0.2
+# 城市暂停键 Contract · v0.5
 
-Phase 0 已建立 `src/` 前端、`server/` 后端、基础测试和 `package.json`，尚未建立地图或推荐领域类型。在 canonical TypeScript 类型出现前，本文件是 A/B 共享语义的唯一来源；建立代码类型后，在此记录其唯一路径并以该定义为准，不平行维护第二套字段。字段和状态仅依据双方确认、百度官方文档及真实接口测试结果更新。
+本文件记录 A/B 模块交界与事实语义。Canonical TypeScript 类型出现后，以本文件列出的唯一路径为准，不在地图侧和推荐侧复制同名业务类型。
 
-## 边界与状态
+## 总体数据流
 
-`UserInput → UserIntent → MapSearchRequest → MapPOI[] → CandidatePlan[] → Recommendation[] → 地图展示 / AI 解释`
+`UserInput → UserIntent → Candidate Provider → MapPOI + RouteResult → CandidatePlan → Recommendation → Planner`
 
-`RouteResult` 是地图侧提供路线与步行事实的独立结果，供 CandidatePlan 可行性判断和最终展示使用。地图 API 原始响应只能进入地图 Adapter/Service，不能渗入推荐与 UI。真实服务与 Mock 服务必须遵守同一业务 Contract，Demo 输出须显式标明 Mock 来源。
+地图 API 原始响应只能进入 B 线 Adapter/Service。推荐核心只消费 shared Contract。Mock 与真实 Provider 使用相同 Contract，并以 `source` 明确区分；真实失败不得静默切换成 Mock。
 
-| 概念 | 负责人 | 当前约定 |
+## Canonical 类型位置
+
+| 概念 | 唯一来源 | 责任 |
 | --- | --- | --- |
-| `UserIntent` | A 线 | 从用户输入解析时间、活动、偏好、是否返回等；具体字段未定。 |
-| `MapSearchRequest` | A/B 共同确认 | 业务侧给地图侧的检索需求；类别、范围和坐标字段待实现时确定。 |
-| `MapPOI` | B 线 | 地图候选地点；真实字段仅收纳百度环境已验证可提供的值。 |
-| `RouteResult` | B 线 | 已验证路线、步行时间及距离等；不可用时保持 unknown 或明确错误状态。 |
-| `CandidatePlan` | A 线 | 使用真实/明确 Mock 的地点与路段数据组成候选，并计算时间可行性。 |
-| `Recommendation` | A 线 | 只从可行候选排序；解释只能引用已确认事实或标明的派生量。 |
+| `MapPOI` | `src/contracts/map.ts` | REAL/MOCK 地点事实，不含路线时间。 |
+| `RouteResult` | `src/contracts/map.ts` | 两个明确端点之间的有向步行路线事实或失败状态。 |
+| `UserIntent` | `src/recommendation/model.ts` | A 线解析后的用户时间与约束。 |
+| `CandidateData` / `CandidateProvider` | `src/recommendation/model.ts` | 向推荐核心注入 MapPOI、RouteResult 与 A 线政策。 |
+| `CandidatePlan` | `src/recommendation/model.ts` | 已通过 hard constraints 的具体时间安排。 |
+| `Recommendation` | `src/recommendation/model.ts` | CandidatePlan 加上确定性策略选择与解释。 |
 
-## 字段来源
+## MapPOI v0.1
 
-| 分类 | 含义与处理 |
+`MapPOI` 只描述“地点本身是什么”。
+
+| 字段 | 语义 | 状态 |
+| --- | --- | --- |
+| `source` | `real` 或 `mock` | REQUIRED |
+| `provider` | `baidu` 或 `mock` | REQUIRED |
+| `providerId` | Provider 内稳定标识 | REAL，REQUIRED |
+| `name` | 地点展示名称 | REAL，REQUIRED |
+| `location` | latitude、longitude、`BD-09` | REAL，REQUIRED |
+| `address` | 地址 | REAL，OPTIONAL |
+| `categories` | Provider 分类/标签的归一化文本 | REAL，OPTIONAL |
+| `openingHours` | Provider 返回的营业时间文本 | REAL，OPTIONAL |
+| `rating` | Provider 返回且可解析的评分 | REAL，OPTIONAL |
+
+`walkingDistanceMeters`、`walkingDurationSeconds` 和 `walkingMinutes` 禁止进入 `MapPOI`。同一地点从不同起点出发的路线不同。
+
+`isFree`、`isQuiet`、`isCrowded`、`isIndoor`、`comfortable`、`suitableForRest` 不属于 v0.1。百度当前验证结果不能支持这些布尔事实。
+
+## RouteResult v0.1
+
+路线由 `from` 和 `to` 两个带 ID 与 BD-09 坐标的端点确定，并且是有方向的。需要返程时必须单独查询，不能假设对称。默认 open_ended 只查询去程，不为未来可能使用的返程消耗配额。
+
+成功结果：
+
+| 字段 | 语义 | 状态 |
+| --- | --- | --- |
+| `status: success` | 成功取得路线 | REAL |
+| `walkingDistanceMeters` | 百度成功路线返回的米数 | REAL |
+| `walkingDurationSeconds` | 百度成功路线返回的秒数 | REAL |
+| `walkingMinutes` | `ceil(walkingDurationSeconds / 60)` | DERIVED |
+| `coordinateSystem` | `BD-09` | REAL |
+
+失败结果使用 `no_route`、`timeout` 或 `provider_error`，且不携带距离或时间。失败不能转换为 0、直线距离、无限远或假路线。
+
+## CandidatePlan 边界
+
+`CandidatePlan` 表示一个通过 hard constraints 的具体安排：引用所使用的 `MapPOI` 和成功 `RouteResult`，并包含 returnMode、去程步行、停留、可选返程、3 分钟缓冲、总耗时、剩余时间、预算、消费信息状态和 `feasibility: feasible`。
+
+- 地点、路线米数和路线秒数：REAL MAP FACT 或明确 MOCK。
+- `walkingMinutes`、停留分配、缓冲、总耗时：DERIVED / RECOMMENDATION LOGIC。
+- 策略标签与排序原因：RECOMMENDATION LOGIC。
+- 失败或缺失路线不会形成 CandidatePlan；时间超预算属于 INFEASIBLE hard constraint，不进入排序。
+
+## Time Semantics v0.1
+
+UserIntent 使用 `returnMode: "open_ended" | "return_to_start"`，取代原 returnToStart boolean；未指定时为 open_ended。当前表单返程开关显式选择模式，文字冲突仍由表单优先并提示。
+
+- open_ended：去程移动 + 停留/活动 + buffer <= availableMinutes。
+- return_to_start：去程移动 + 停留/活动 + 真实返程 + buffer <= availableMinutes。
+- 去程移动包含已有多站方案的站间移动；不新增搜索或策略。
+- open_ended 不要求返程 RouteResult，也不生成返程 step。
+- return_to_start 必须有同来源、成功的有向返程；缺失/失败或超预算在 hard constraints 过滤。REAL 不可使用 MOCK 返程。
+- CandidatePlan 的 returnMode、outboundWalkingMinutes、stayMinutes、bufferMinutes、可选 returnWalkingMinutes、totalMinutes、remainingMinutes 明确记录分段时间；walkingMinutes 保留为所有步行总和。
+- 原最低/建议停留分配政策不变：固定 15 分钟活动应将 minimumStayMinutes 和 suggestedStayMinutes 均设为 15。6 + 15 + 3 = 24；加 7 分钟返程为 31，30 分钟预算不可行。
+- 模式改变后清除旧推荐；REAL 使用当前模式所需路线重新准备 CandidateData。只复用同端点位置的成功路线，不推断反向路线。
+
+## Mock-only 与 inference
+
+| 字段/规则 | 当前处理 |
 | --- | --- |
-| `confirmed` | 已根据官方文档并通过真实接口测试确认的地图事实；当前已确认 JSAPI `uid`、`title`、`point`，以及成功步行路线的米制距离、秒制耗时和 steps。正式 `MapPOI` / `RouteResult` 尚未定型。 |
-| `optional` | 能力可能给出但可缺失；只有实测后才列入真实 Contract。 |
-| `derived` | 基于已知输入及可靠地图事实确定性计算，例如剩余停留时间。 |
-| `mock-only` | Demo 数据；须携带清晰来源标识，不能冒充真实 POI 或路线。 |
-| `forbidden-inference` | 从名称、类别或 LLM 猜测出的地图属性，例如“书店一定安静”。不得作为事实。 |
+| `costRequired` | 仅 Mock 数据目前有值；真实 Provider 保持 unknown。`avoidCost` 要求下，unknown 不能证明免费，因此候选被 hard constraint 排除。 |
+| `kind` | Mock 中用于稳定测试；真实 POI 当前保持 unknown。存在类别排除约束时，unknown 不能证明符合要求，因此候选被 hard constraint 排除。未来如从分类映射，应明确标记为 INFERENCE / A 线规则。 |
+| `minimumStayMinutes` / `suggestedStayMinutes` | A 线通用停留政策，属于 RECOMMENDATION LOGIC，不是百度事实。 |
+| quiet / crowded / indoor / comfort / rest-friendly | 当前不进入 Contract；需要未来可信数据源或显式 inference 规则。 |
 
-全项目保持 `unknown ≠ false`、`unknown ≠ no`：未返回的字段用 `undefined`、`null` 或届时统一约定的 unknown 表达，算法须处理未知值。不要为了凑齐字段推测评分、价格、营业信息、室内环境或设施状态。
+禁止将 `park → free`、`library → quiet`、`bookstore → indoor` 写成 REAL MAP FACT。
 
-## 当前能力状态
+## Provider 边界
 
-**CONFIRMED：** 浏览器端和服务端 AK 已由用户准备，所需地图服务已开通；两名开发者均在 Codex 主工程中协作。浏览器端已通过官方 JSAPI Loader 加载 JSAPI 4.0，并以 BD-09 坐标初始化开发阶段默认中心；真实浏览器中已验证地图显示、拖动、缩放、刷新重新初始化，以及 Browser AK 缺失时的错误状态。Phase 1B 已验证定位、当前位置 Marker、1500 米“公园” `LocalSearch` 及 `uid`、`title`、`point`。Phase 1C 已通过 Node 后端真实验证 Direction API v2 步行路线的距离（米）、耗时（秒）和 steps，并验证 Place API v3 对一个真实公园返回分类、营业时间和评分；详细记录见 `docs/PHASE_1B_VALIDATION.md` 与 `docs/PHASE_1C_VALIDATION.md`。
+`createMockCandidateProvider()` 提供完全虚构但符合 shared Contract 的稳定测试数据。
 
-**UNVERIFIED：** POI 详情字段的跨地点稳定性、营业状态高级权限、路线失败/无路线的真实服务表现、非 BD-09 坐标转换、定位服务不可用/浏览器不支持分支、实际账户配额及缓存策略。B 线在 Codex 中按小粒度实现，并以官方文档和真实请求验证。
+`createRealCandidateProvider()` 接收 B 线已经适配的一个 `MapPOI` 与有向 `RouteResult[]`。它不解析百度 raw response，不补造消费、安静、室内等属性。Planner 由用户明确选择 MOCK 或 REAL；REAL 未就绪或失败时显示状态，不自动伪装成成功的 Mock 推荐。
+
+## 当前真实能力状态
+
+**VERIFIED（已有 Phase 1B/1C 证据）：** JSAPI `uid`、`title`、BD-09 `point`；Direction v2 成功路线的米、秒和 steps；一个真实公园的 Place v3 分类、营业时间与评分。
+
+**OPTIONAL / LIMITED EVIDENCE：** 地址、分类、营业时间与评分可以缺失；Place Detail 目前只有一个真实地点样本。
+
+**UNKNOWN / NOT VERIFIED：** 详情字段跨类别稳定性、真实 `no_route` 响应、超时分支、营业状态高级权限、实际配额和缓存策略。
+
+详细证据见 `docs/PHASE_1B_VALIDATION.md` 和 `docs/PHASE_1C_VALIDATION.md`。
 
 ## 密钥边界
 
-浏览器端地图能力使用浏览器端 AK。需要 WebAPI 的地图事实必须由项目服务端代理调用；`SERVER_AK` 只从服务端运行环境读取，绝不能进入 Git、客户端源码、公开环境变量、API 响应或客户端 bundle。不得再次向用户索取或在输出中复述该密钥。日志和错误信息不得包含完整百度请求 URL或 `ak` 参数。
+Browser AK 只用于浏览器 JSAPI。需要 WebAPI 的路线和详情请求必须经过项目服务端；`SERVER_AK` 只从服务端运行环境读取，绝不能进入 Git、客户端源码、公开环境变量、API response 或客户端 bundle。日志和错误不得包含 AK、完整百度请求 URL或服务端配置对象。
 
 ## 变更约定
 
-新增地图字段前，记录其来源、缺失表现和真实接口验证证据；若能力缺失，调整 Contract 或方案。类型创建后此文档引用代码中的 canonical type，不平行维护字段清单。跨模块接口变更由 A/B 同步并做现有的相关检查。
+新增字段前必须记录来源、optional/unknown 表现和真实验证证据。跨模块语义变更由 A/B 共同确认；不得为了单线实现方便私自改变另一线依赖的 Contract。

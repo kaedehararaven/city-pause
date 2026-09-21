@@ -1,16 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 
+import { isSuccessfulRoute } from "../contracts/map";
+import type { MapPOI, RouteEndpoint, RouteResult } from "../contracts/map";
 import {
   fetchPlaceDetail,
-  fetchWalkingRoute,
+  fetchRequiredRoutes,
   type TemporaryPlaceDetail,
-  type TemporaryWalkingRoute,
 } from "./capabilityClient";
 import { loadBaiduMap } from "./loadBaiduMap";
 import {
   adaptBaiduLocalResultPoi,
-  type TemporaryMapPoi,
+  mergeBaiduPlaceDetail,
 } from "./poiAdapter";
+
+import type { ReturnMode } from "../recommendation/model";
+
+export type RealMapIntegrationState =
+  | { status: "idle" | "loading" | "error"; message: string }
+  | {
+      status: "ready";
+      message: string;
+      origin: RouteEndpoint & { name: string };
+      poi: MapPOI;
+      routes: RouteResult[];
+    };
 
 type MapStatus = "loading" | "success" | "error";
 type LocationStatus =
@@ -26,7 +39,7 @@ type LocationStatus =
 type PoiSearchState = {
   status: "idle" | "searching" | "success" | "empty" | "error";
   total: number;
-  pois: TemporaryMapPoi[];
+  pois: MapPOI[];
   observedRawFields: string[];
   message: string;
 };
@@ -54,7 +67,9 @@ const initialPoiSearchState: PoiSearchState = {
   observedRawFields: [],
   message: "定位成功后将自动搜索附近 1500 米内的“公园”。",
 };
-const initialRouteState: CapabilityState<TemporaryWalkingRoute> = {
+type RoutePair = { outbound: RouteResult; return?: RouteResult };
+
+const initialRouteState: CapabilityState<RoutePair> = {
   status: "idle",
   message: "等待真实定位和 POI。",
 };
@@ -88,7 +103,13 @@ function locationFailure(status: number): {
   return { status: "error", message: "百度定位失败，已保留开发默认中心。" };
 }
 
-export function BaiduMap() {
+export function BaiduMap({
+  returnMode,
+  onRealIntegrationChange,
+}: {
+  returnMode: ReturnMode;
+  onRealIntegrationChange?: (state: RealMapIntegrationState) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<BMap.Map | null>(null);
   const BMapRef = useRef<typeof BMap | null>(null);
@@ -96,6 +117,14 @@ export function BaiduMap() {
   const localSearchRef = useRef<BMap.LocalSearch | null>(null);
   const locationRequestInFlightRef = useRef(false);
   const capabilityProbeIdRef = useRef(0);
+  const returnModeRef = useRef(returnMode);
+  returnModeRef.current = returnMode;
+  const lastProbeRef = useRef<{ point: BMap.Point; poi: MapPOI; routes: RouteResult[] } | null>(null);
+
+  useEffect(() => {
+    const last = lastProbeRef.current;
+    if (last) void probePoiCapabilities(last.point, last.poi);
+  }, [returnMode]);
 
   const [mapStatus, setMapStatus] = useState<MapStatus>("loading");
   const [mapErrorMessage, setMapErrorMessage] = useState("");
@@ -106,7 +135,7 @@ export function BaiduMap() {
   const [locationAccuracy, setLocationAccuracy] = useState<number>();
   const [poiSearch, setPoiSearch] = useState<PoiSearchState>(initialPoiSearchState);
   const [routeState, setRouteState] =
-    useState<CapabilityState<TemporaryWalkingRoute>>(initialRouteState);
+    useState<CapabilityState<RoutePair>>(initialRouteState);
   const [detailState, setDetailState] =
     useState<CapabilityState<TemporaryPlaceDetail>>(initialDetailState);
 
@@ -180,31 +209,64 @@ export function BaiduMap() {
     };
   }, []);
 
-  async function probePoiCapabilities(origin: BMap.Point, poi: TemporaryMapPoi) {
+  async function probePoiCapabilities(originPoint: BMap.Point, poi: MapPOI) {
     const probeId = ++capabilityProbeIdRef.current;
-    setRouteState({ status: "loading", message: "正在查询真实步行路线…" });
-    setDetailState({ status: "loading", message: "正在查询真实地点详情…" });
+    const requestedMode = returnModeRef.current;
+    const cached = lastProbeRef.current?.routes ?? [];
+    lastProbeRef.current = { point: originPoint, poi, routes: cached };
+    const origin: RouteEndpoint & { name: string } = {
+      id: "current-location",
+      name: "当前位置",
+      location: {
+        latitude: originPoint.lat,
+        longitude: originPoint.lng,
+        coordinateSystem: "BD-09",
+      },
+    };
+    const destination: RouteEndpoint = {
+      id: poi.providerId,
+      location: poi.location,
+    };
 
-    const [routeResult, detailResult] = await Promise.allSettled([
-      fetchWalkingRoute({
-        originLatitude: origin.lat,
-        originLongitude: origin.lng,
-        destinationLatitude: poi.location.latitude,
-        destinationLongitude: poi.location.longitude,
+    setRouteState({ status: "loading", message: "正在查询当前模式所需的真实路线…" });
+    setDetailState({ status: "loading", message: "正在查询真实地点详情…" });
+    onRealIntegrationChange?.({
+      status: "loading",
+      message: "正在获取真实 POI 与当前模式所需路线。",
+    });
+
+    const [routeResults, detailResult] = await Promise.allSettled([
+      fetchRequiredRoutes({
+        from: origin,
+        to: destination,
         destinationUid: poi.providerId,
-      }),
+      }, requestedMode, cached),
       fetchPlaceDetail(poi.providerId),
     ]);
     if (probeId !== capabilityProbeIdRef.current) return;
 
+    const routes = routeResults.status === "fulfilled" ? routeResults.value : [];
+    const [outboundResult, returnResult] = routes;
+    lastProbeRef.current = { point: originPoint, poi, routes };
+    const routesReady =
+      outboundResult &&
+      isSuccessfulRoute(outboundResult) &&
+      (requestedMode === "open_ended" || (returnResult && isSuccessfulRoute(returnResult)));
     setRouteState(
-      routeResult.status === "fulfilled"
+      outboundResult && routesReady
         ? {
             status: "success",
-            data: routeResult.value,
-            message: "真实步行路线已返回。",
+            data: { outbound: outboundResult, return: returnResult },
+            message: "当前模式所需的真实路线已返回。",
           }
-        : { status: "error", message: "真实步行路线查询失败。" },
+        : {
+            status: "error",
+            data:
+              outboundResult
+                ? { outbound: outboundResult, return: returnResult }
+                : undefined,
+            message: "当前模式所需的真实路线不可用，未生成 REAL 推荐。",
+          },
     );
     setDetailState(
       detailResult.status === "fulfilled"
@@ -215,6 +277,26 @@ export function BaiduMap() {
           }
         : { status: "error", message: "真实地点详情查询失败。" },
     );
+
+    if (!routesReady) {
+      onRealIntegrationChange?.({
+        status: "error",
+        message: "当前模式所需的真实路线不可用，没有生成假路线或 Mock 替代。",
+      });
+      return;
+    }
+
+    const detail =
+      detailResult.status === "fulfilled" ? detailResult.value : undefined;
+    onRealIntegrationChange?.({
+      status: "ready",
+      message: detail
+        ? "真实地点、详情与所需路线已进入推荐数据边界。"
+        : "真实地点与所需路线已进入推荐数据边界；可选详情为 unknown。",
+      origin,
+      poi: mergeBaiduPlaceDetail(poi, detail),
+      routes,
+    });
   }
 
   function searchNearbyParks(
@@ -246,6 +328,10 @@ export function BaiduMap() {
             status: "error",
             message: `公园 POI 搜索失败（百度状态码 ${status}）。`,
           });
+          onRealIntegrationChange?.({
+            status: "error",
+            message: "真实 POI 搜索失败，未切换为 Mock。",
+          });
           return;
         }
 
@@ -255,7 +341,7 @@ export function BaiduMap() {
         ).filter((poi): poi is BMap.LocalResultPoi => poi !== undefined);
         const pois = rawPois
           .map(adaptBaiduLocalResultPoi)
-          .filter((poi): poi is TemporaryMapPoi => poi !== null);
+          .filter((poi): poi is MapPOI => poi !== null);
         const observedRawFields = Array.from(
           new Set(
             rawPois.flatMap((poi) =>
@@ -281,7 +367,14 @@ export function BaiduMap() {
             ? `本页观察到 ${pois.length} 个真实公园 POI，共匹配 ${total} 个结果。`
             : "搜索成功，但当前页没有可适配的公园 POI。",
         });
-        if (pois[0]) void probePoiCapabilities(center, pois[0]);
+        if (pois[0]) {
+          void probePoiCapabilities(center, pois[0]);
+        } else {
+          onRealIntegrationChange?.({
+            status: "error",
+            message: "真实搜索没有可用 POI，未切换为 Mock。",
+          });
+        }
       },
     });
 
@@ -322,9 +415,14 @@ export function BaiduMap() {
       restoreDevelopmentFallback(BMapApi, map);
       setLocationStatus("unsupported");
       setLocationMessage("当前浏览器不支持定位，已保留开发默认中心。");
+      onRealIntegrationChange?.({
+        status: "error",
+        message: "浏览器不支持定位，REAL 推荐不可用。",
+      });
       return;
     }
 
+    lastProbeRef.current = null;
     locationRequestInFlightRef.current = true;
     setLocationStatus("locating");
     setLocationMessage("正在请求真实位置，请处理浏览器的位置权限提示…");
@@ -333,6 +431,10 @@ export function BaiduMap() {
     capabilityProbeIdRef.current += 1;
     setRouteState(initialRouteState);
     setDetailState(initialDetailState);
+    onRealIntegrationChange?.({
+      status: "loading",
+      message: "正在请求真实定位。",
+    });
 
     const options: BMap.PositionOptions = {
       enableHighAccuracy: true,
@@ -352,6 +454,10 @@ export function BaiduMap() {
         restoreDevelopmentFallback(BMapApi, map);
         setLocationStatus(failure.status);
         setLocationMessage(failure.message);
+        onRealIntegrationChange?.({
+          status: "error",
+          message: `${failure.message} REAL 推荐不可用。`,
+        });
         return;
       }
 
@@ -469,8 +575,7 @@ export function BaiduMap() {
                 <li key={poi.providerId}>
                   <strong>{poi.name}</strong>
                   <span>{poi.address ?? "地址 unknown"}</span>
-                  <span>分类：{poi.categoryTags?.join(" / ") ?? "unknown"}</span>
-                  <span>电话：{poi.telephone ?? "unknown"}</span>
+                  <span>分类：{poi.categories?.join(" / ") ?? "unknown"}</span>
                   <span>
                     坐标：{poi.location.longitude.toFixed(6)}, {" "}
                     {poi.location.latitude.toFixed(6)} · {" "}
@@ -493,21 +598,24 @@ export function BaiduMap() {
             </span>
           </div>
           <p aria-live="polite">{routeState.message}</p>
-          {routeState.data && (
+          {routeState.data &&
+            isSuccessfulRoute(routeState.data.outbound) && (
             <dl className="fact-list">
-              <div><dt>REAL · 步行距离</dt><dd>{routeState.data.walkingDistanceMeters} m</dd></div>
-              <div><dt>REAL · 原始耗时</dt><dd>{routeState.data.walkingDurationSeconds} s</dd></div>
-              <div><dt>DERIVED · 向上取整</dt><dd>{routeState.data.walkingMinutes} min</dd></div>
-              <div><dt>REAL · 路段数</dt><dd>{routeState.data.stepCount}</dd></div>
+              <div><dt>REAL · 去程距离</dt><dd>{routeState.data.outbound.walkingDistanceMeters} m</dd></div>
+              <div><dt>REAL · 去程耗时</dt><dd>{routeState.data.outbound.walkingDurationSeconds} s</dd></div>
+              <div><dt>DERIVED · 去程分钟</dt><dd>{routeState.data.outbound.walkingMinutes} min</dd></div>
+              {routeState.data.return && isSuccessfulRoute(routeState.data.return) && <>
+              <div><dt>REAL · 返程距离</dt><dd>{routeState.data.return.walkingDistanceMeters} m</dd></div>
+              <div><dt>REAL · 返程耗时</dt><dd>{routeState.data.return.walkingDurationSeconds} s</dd></div>
+              <div><dt>DERIVED · 返程分钟</dt><dd>{routeState.data.return.walkingMinutes} min</dd></div>
+              </>}
             </dl>
           )}
-          {routeState.data && (
-            <div className="raw-fields">
-              <strong>路线字段名与运行时类型</strong>
-              <code>{(routeState.data.observedRouteFields ?? []).join(", ")}</code>
-              <strong>路段字段名与运行时类型</strong>
-              <code>{(routeState.data.observedStepFields ?? []).join(", ")}</code>
-            </div>
+          {routeState.data && !isSuccessfulRoute(routeState.data.outbound) && (
+            <p className="probe-meta">去程状态：{routeState.data.outbound.status}</p>
+          )}
+          {routeState.data?.return && !isSuccessfulRoute(routeState.data.return) && (
+            <p className="probe-meta">返程状态：{routeState.data.return.status}</p>
           )}
         </section>
 

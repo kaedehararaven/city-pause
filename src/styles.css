@@ -273,3 +273,20 @@ h1 {
     padding-top: 1rem;
   }
 }
+
+.map-development-access {
+  width: min(1280px, calc(100% - 2rem));
+  margin: 2rem auto;
+  padding-top: 1rem;
+  border-top: 1px solid #d8ded9;
+}
+
+.map-development-access > button {
+  padding: 0.7rem 1rem;
+  border: 1px solid #b6c7b8;
+  border-radius: 10px;
+  color: #315943;
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+}

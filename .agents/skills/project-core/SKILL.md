@@ -3,11 +3,11 @@ name: project-core
 description: 城市暂停键项目的共享产品边界、数据流与工程协作规则；处理本仓库的功能、接口或集成任务时使用。
 ---
 
-# 项目核心 · v0.2
+# 项目核心 · v0.3
 
 面向当前位置有约 10–90 分钟碎片时间的用户，结合时间与即时需求给出少量现在可执行的城市微休闲方案，而非大量附近 POI。
 
-核心数据流：`UserInput → UserIntent → MapSearchRequest → MapPOI[] → CandidatePlan[] → Recommendation[] → 地图展示 / AI 解释`。当前仓库尚无代码类型；以 [Contract](../../../docs/CONTRACTS.md) 记录语义，未来以实际 TypeScript 定义为准，避免文档与代码两套类型。
+核心数据流：`UserInput → UserIntent → Candidate Provider → MapPOI[] + RouteResult[] → CandidatePlan[] → Recommendation[] → 地图展示 / AI 解释`。`MapPOI` / `RouteResult` 的 canonical 类型位于 `src/contracts/map.ts`，推荐侧 canonical 类型位于 `src/recommendation/model.ts`；以 [Contract](../../../docs/CONTRACTS.md) 记录边界，避免文档与代码出现平行类型。
 
 - AI 理解用户并依据已验证结果解释；地图提供真实世界事实；确定性推荐逻辑判断可行性并排序。保持三层边界。
 - POI、坐标、地址、路线、步行距离与时间、营业信息及设施属性不能由 LLM 编造。真实模式只使用百度地图 API 实际返回并经 Adapter 按 Contract 接入的数据；Demo 模式明确标为 Mock。

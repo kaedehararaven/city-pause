@@ -1,21 +1,21 @@
 import { describe, expect, it } from "vitest";
 
-import { adaptBaiduLocalResultPoi } from "./poiAdapter";
+import { adaptBaiduLocalResultPoi, mergeBaiduPlaceDetail } from "./poiAdapter";
 
-describe("adaptBaiduLocalResultPoi", () => {
-  it("maps verified Baidu fields into the temporary internal shape", () => {
+describe("Baidu MapPOI adapter", () => {
+  it("maps verified Baidu fields into canonical MapPOI v0.1", () => {
     const rawPoi = {
       uid: "provider-id",
       title: "示例公园",
       point: { lng: 116.4, lat: 39.9 },
       address: "示例地址",
-      phoneNumber: "010-00000000",
       tags: ["公园", " 城市公园 "],
-      adcode: 440307,
+      provider_internal: "must-not-leak",
     } as unknown as BMap.LocalResultPoi;
 
     expect(adaptBaiduLocalResultPoi(rawPoi)).toEqual({
-      source: "baidu-jsapi-local-search",
+      source: "real",
+      provider: "baidu",
       providerId: "provider-id",
       name: "示例公园",
       location: {
@@ -24,45 +24,76 @@ describe("adaptBaiduLocalResultPoi", () => {
         coordinateSystem: "BD-09",
       },
       address: "示例地址",
-      telephone: "010-00000000",
-      categoryTags: ["公园", "城市公园"],
-      adcode: "440307",
+      categories: ["公园", "城市公园"],
     });
   });
 
-  it("keeps absent optional facts unknown instead of inventing values", () => {
-    const rawPoi = {
+  it("keeps absent optional facts unknown and excludes route/raw fields", () => {
+    const adapted = adaptBaiduLocalResultPoi({
       uid: "provider-id",
       title: "只有必要字段的公园",
       point: { lng: 116.4, lat: 39.9 },
-    } as unknown as BMap.LocalResultPoi;
+    } as unknown as BMap.LocalResultPoi);
 
-    const adapted = adaptBaiduLocalResultPoi(rawPoi);
-
-    expect(adapted?.telephone).toBeUndefined();
-    expect(adapted?.categoryTags).toBeUndefined();
-    expect(adapted).not.toHaveProperty("openingHours");
+    expect(adapted?.address).toBeUndefined();
+    expect(adapted?.categories).toBeUndefined();
+    expect(adapted?.openingHours).toBeUndefined();
+    expect(adapted?.rating).toBeUndefined();
     expect(adapted).not.toHaveProperty("walkingMinutes");
+    expect(adapted).not.toHaveProperty("provider_internal");
+    expect(adapted).not.toHaveProperty("isFree");
   });
 
-  it("ignores an unexpected runtime shape for optional tags", () => {
+  it("merges only supported optional Place Detail facts", () => {
+    const base = adaptBaiduLocalResultPoi({
+      uid: "provider-id",
+      title: "示例地点",
+      point: { lng: 116.4, lat: 39.9 },
+    } as unknown as BMap.LocalResultPoi)!;
+
+    const merged = mergeBaiduPlaceDetail(base, {
+      source: "baidu-place-v3-detail",
+      providerId: "provider-id",
+      name: "示例地点",
+      categoryTag: "旅游景点;公园",
+      classifiedTag: "生态公园",
+      shopHours: "00:00-24:00",
+      overallRating: "4.0",
+      price: undefined,
+      observedFields: [],
+      observedDetailFields: [],
+    });
+
+    expect(merged.categories).toEqual(["旅游景点", "公园", "生态公园"]);
+    expect(merged.openingHours).toBe("00:00-24:00");
+    expect(merged.rating).toBe(4);
+    expect(merged).not.toHaveProperty("price");
+  });
+
+  it("ignores malformed optional fields and mismatched detail identity", () => {
     const rawPoi = {
       uid: "provider-id",
       title: "运行时字段形状异常的公园",
       point: { lng: 116.4, lat: 39.9 },
       tags: "公园",
     } as unknown as BMap.LocalResultPoi;
+    const base = adaptBaiduLocalResultPoi(rawPoi)!;
 
-    expect(adaptBaiduLocalResultPoi(rawPoi)?.categoryTags).toBeUndefined();
+    expect(base.categories).toBeUndefined();
+    expect(mergeBaiduPlaceDetail(base, {
+      source: "baidu-place-v3-detail",
+      providerId: "other-id",
+      name: "其他地点",
+      observedFields: [],
+      observedDetailFields: [],
+    })).toBe(base);
   });
 
-  it("rejects a result without the provider's required identity or point", () => {
-    expect(
-      adaptBaiduLocalResultPoi({
-        uid: "",
-        title: "无有效标识",
-        point: { lng: 116.4, lat: 39.9 },
-      } as unknown as BMap.LocalResultPoi),
-    ).toBeNull();
+  it("rejects a result without required identity or point", () => {
+    expect(adaptBaiduLocalResultPoi({
+      uid: "",
+      title: "无有效标识",
+      point: { lng: 116.4, lat: 39.9 },
+    } as unknown as BMap.LocalResultPoi)).toBeNull();
   });
 });

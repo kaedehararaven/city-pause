@@ -98,9 +98,14 @@ export function createAppServer(options: AppServerOptions = {}): Server {
       } catch (error) {
         const providerStatus =
           error instanceof BaiduProviderError ? error.providerStatus : undefined;
-        sendJson(response, 502, {
+        const routeStatus =
+          error instanceof BaiduProviderError
+            ? error.routeStatus
+            : "provider_error";
+        sendJson(response, routeStatus === "no_route" ? 404 : routeStatus === "timeout" ? 504 : 502, {
           ok: false,
           error: "Walking route provider failed",
+          routeStatus,
           ...(providerStatus === undefined ? {} : { providerStatus }),
         });
       }

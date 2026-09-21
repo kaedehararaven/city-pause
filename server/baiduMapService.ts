@@ -51,6 +51,7 @@ export class BaiduProviderError extends Error {
   constructor(
     message: string,
     readonly providerStatus?: number,
+    readonly routeStatus: "no_route" | "timeout" | "provider_error" = "provider_error",
   ) {
     super(message);
     this.name = "BaiduProviderError";
@@ -109,7 +110,7 @@ export function adaptWalkingRoute(payload: unknown): TemporaryWalkingRoute {
   const result = isObject(payload.result) ? payload.result : undefined;
   const routes = result && Array.isArray(result.routes) ? result.routes : undefined;
   const route = routes?.find(isObject);
-  if (!route) throw new BaiduProviderError("No walking route returned", status);
+  if (!route) throw new BaiduProviderError("No walking route returned", status, "no_route");
 
   const distance = finiteNonNegative(route.distance);
   const duration = finiteNonNegative(route.duration);
@@ -239,8 +240,15 @@ async function fetchBaiduJson(
       headers: { accept: "application/json" },
       signal: AbortSignal.timeout(10_000),
     });
-  } catch {
-    throw new BaiduProviderError("Baidu request unavailable");
+  } catch (error) {
+    const timedOut =
+      error instanceof Error &&
+      (error.name === "TimeoutError" || error.name === "AbortError");
+    throw new BaiduProviderError(
+      "Baidu request unavailable",
+      undefined,
+      timedOut ? "timeout" : "provider_error",
+    );
   }
 
   if (!response.ok) {

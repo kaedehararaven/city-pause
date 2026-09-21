@@ -1,21 +1,5 @@
-export type TemporaryMapPoi = {
-  source: "baidu-jsapi-local-search";
-  providerId: string;
-  name: string;
-  location: {
-    longitude: number;
-    latitude: number;
-    coordinateSystem: "BD-09";
-  };
-  address?: string;
-  city?: string;
-  province?: string;
-  telephone?: string;
-  categoryTags?: string[];
-  providerType?: number;
-  adcode?: string;
-  detailUrl?: string;
-};
+import type { MapPOI } from "../contracts/map";
+import type { TemporaryPlaceDetail } from "./capabilityClient";
 
 function optionalText(value: unknown) {
   if (typeof value !== "string") return undefined;
@@ -23,14 +7,22 @@ function optionalText(value: unknown) {
   return normalized || undefined;
 }
 
-function optionalCode(value: unknown) {
-  if (typeof value === "number" && Number.isFinite(value)) return String(value);
-  return optionalText(value);
+function uniqueText(values: unknown[]): string[] | undefined {
+  const normalized = Array.from(
+    new Set(
+      values
+        .filter((value): value is string => typeof value === "string")
+        .flatMap((value) => value.split(/[;/]/))
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ),
+  );
+  return normalized.length ? normalized : undefined;
 }
 
 export function adaptBaiduLocalResultPoi(
   poi: BMap.LocalResultPoi,
-): TemporaryMapPoi | null {
+): MapPOI | null {
   if (
     !poi.uid ||
     !poi.title ||
@@ -41,19 +33,9 @@ export function adaptBaiduLocalResultPoi(
     return null;
   }
 
-  const categoryTags = Array.isArray(poi.tags)
-    ? poi.tags
-        .filter((tag): tag is string => typeof tag === "string")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0)
-    : undefined;
-  const providerType =
-    typeof poi.type === "number" && Number.isFinite(poi.type)
-      ? poi.type
-      : undefined;
-
   return {
-    source: "baidu-jsapi-local-search",
+    source: "real",
+    provider: "baidu",
     providerId: poi.uid,
     name: poi.title,
     location: {
@@ -62,12 +44,32 @@ export function adaptBaiduLocalResultPoi(
       coordinateSystem: "BD-09",
     },
     address: optionalText(poi.address),
-    city: optionalText(poi.city),
-    province: optionalText(poi.province),
-    telephone: optionalText(poi.phoneNumber),
-    categoryTags: categoryTags?.length ? categoryTags : undefined,
-    providerType,
-    adcode: optionalCode(poi.adcode),
-    detailUrl: optionalText(poi.detailUrl),
+    categories: Array.isArray(poi.tags) ? uniqueText(poi.tags) : undefined,
+  };
+}
+
+export function mergeBaiduPlaceDetail(
+  poi: MapPOI,
+  detail: TemporaryPlaceDetail | undefined,
+): MapPOI {
+  if (!detail || detail.providerId !== poi.providerId) return poi;
+
+  const ratingText = optionalText(detail.overallRating);
+  const parsedRating = ratingText === undefined ? undefined : Number(ratingText);
+  const detailCategories = uniqueText([
+    ...(poi.categories ?? []),
+    detail.categoryTag,
+    detail.classifiedTag,
+  ]);
+
+  return {
+    ...poi,
+    address: optionalText(detail.address) ?? poi.address,
+    categories: detailCategories,
+    openingHours: optionalText(detail.shopHours),
+    rating:
+      parsedRating !== undefined && Number.isFinite(parsedRating)
+        ? parsedRating
+        : undefined,
   };
 }

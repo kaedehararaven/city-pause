@@ -109,4 +109,25 @@ describe("map capability endpoints", () => {
       },
     });
   });
+
+  it("returns an explicit no_route status without fake route facts", async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+      Response.json({ status: 0, result: { routes: [] } }),
+    );
+    const baseUrl = await startServer({ serverAk: "test-secret", fetchImpl });
+
+    const response = await fetch(
+      `${baseUrl}/api/map/walking-route?originLat=22.5&originLng=114.1&destinationLat=22.6&destinationLng=114.2`,
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(404);
+    expect(payload).toEqual({
+      ok: false,
+      error: "Walking route provider failed",
+      routeStatus: "no_route",
+      providerStatus: 0,
+    });
+    expect(payload).not.toHaveProperty("walkingDistanceMeters");
+  });
 });
