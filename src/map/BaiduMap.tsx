@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
+import {
+  fetchPlaceDetail,
+  fetchWalkingRoute,
+  type TemporaryPlaceDetail,
+  type TemporaryWalkingRoute,
+} from "./capabilityClient";
 import { loadBaiduMap } from "./loadBaiduMap";
 import {
   adaptBaiduLocalResultPoi,
@@ -25,6 +31,12 @@ type PoiSearchState = {
   message: string;
 };
 
+type CapabilityState<T> = {
+  status: "idle" | "loading" | "success" | "error";
+  data?: T;
+  message: string;
+};
+
 const browserAk = import.meta.env.VITE_BAIDU_BROWSER_AK?.trim();
 
 // Phase 1 fallback: Tiananmen, expressed in Baidu BD-09 coordinates.
@@ -41,6 +53,14 @@ const initialPoiSearchState: PoiSearchState = {
   pois: [],
   observedRawFields: [],
   message: "定位成功后将自动搜索附近 1500 米内的“公园”。",
+};
+const initialRouteState: CapabilityState<TemporaryWalkingRoute> = {
+  status: "idle",
+  message: "等待真实定位和 POI。",
+};
+const initialDetailState: CapabilityState<TemporaryPlaceDetail> = {
+  status: "idle",
+  message: "等待真实 POI uid。",
 };
 
 function locationFailure(status: number): {
@@ -75,6 +95,7 @@ export function BaiduMap() {
   const currentLocationMarkerRef = useRef<BMap.Marker | null>(null);
   const localSearchRef = useRef<BMap.LocalSearch | null>(null);
   const locationRequestInFlightRef = useRef(false);
+  const capabilityProbeIdRef = useRef(0);
 
   const [mapStatus, setMapStatus] = useState<MapStatus>("loading");
   const [mapErrorMessage, setMapErrorMessage] = useState("");
@@ -84,6 +105,10 @@ export function BaiduMap() {
   );
   const [locationAccuracy, setLocationAccuracy] = useState<number>();
   const [poiSearch, setPoiSearch] = useState<PoiSearchState>(initialPoiSearchState);
+  const [routeState, setRouteState] =
+    useState<CapabilityState<TemporaryWalkingRoute>>(initialRouteState);
+  const [detailState, setDetailState] =
+    useState<CapabilityState<TemporaryPlaceDetail>>(initialDetailState);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -143,6 +168,7 @@ export function BaiduMap() {
 
     return () => {
       cancelled = true;
+      capabilityProbeIdRef.current += 1;
       locationRequestInFlightRef.current = false;
       if (mapLoadTimer !== undefined) window.clearTimeout(mapLoadTimer);
       localSearchRef.current?.clearResults();
@@ -153,6 +179,43 @@ export function BaiduMap() {
       localSearchRef.current = null;
     };
   }, []);
+
+  async function probePoiCapabilities(origin: BMap.Point, poi: TemporaryMapPoi) {
+    const probeId = ++capabilityProbeIdRef.current;
+    setRouteState({ status: "loading", message: "正在查询真实步行路线…" });
+    setDetailState({ status: "loading", message: "正在查询真实地点详情…" });
+
+    const [routeResult, detailResult] = await Promise.allSettled([
+      fetchWalkingRoute({
+        originLatitude: origin.lat,
+        originLongitude: origin.lng,
+        destinationLatitude: poi.location.latitude,
+        destinationLongitude: poi.location.longitude,
+        destinationUid: poi.providerId,
+      }),
+      fetchPlaceDetail(poi.providerId),
+    ]);
+    if (probeId !== capabilityProbeIdRef.current) return;
+
+    setRouteState(
+      routeResult.status === "fulfilled"
+        ? {
+            status: "success",
+            data: routeResult.value,
+            message: "真实步行路线已返回。",
+          }
+        : { status: "error", message: "真实步行路线查询失败。" },
+    );
+    setDetailState(
+      detailResult.status === "fulfilled"
+        ? {
+            status: "success",
+            data: detailResult.value,
+            message: "真实地点详情已返回。",
+          }
+        : { status: "error", message: "真实地点详情查询失败。" },
+    );
+  }
 
   function searchNearbyParks(
     BMapApi: typeof BMap,
@@ -218,6 +281,7 @@ export function BaiduMap() {
             ? `本页观察到 ${pois.length} 个真实公园 POI，共匹配 ${total} 个结果。`
             : "搜索成功，但当前页没有可适配的公园 POI。",
         });
+        if (pois[0]) void probePoiCapabilities(center, pois[0]);
       },
     });
 
@@ -244,6 +308,9 @@ export function BaiduMap() {
     );
     setLocationAccuracy(undefined);
     setPoiSearch(initialPoiSearchState);
+    capabilityProbeIdRef.current += 1;
+    setRouteState(initialRouteState);
+    setDetailState(initialDetailState);
   }
 
   function handleLocate() {
@@ -263,6 +330,9 @@ export function BaiduMap() {
     setLocationMessage("正在请求真实位置，请处理浏览器的位置权限提示…");
     setLocationAccuracy(undefined);
     setPoiSearch(initialPoiSearchState);
+    capabilityProbeIdRef.current += 1;
+    setRouteState(initialRouteState);
+    setDetailState(initialDetailState);
 
     const options: BMap.PositionOptions = {
       enableHighAccuracy: true,
@@ -318,7 +388,7 @@ export function BaiduMap() {
       <section className="map-panel" aria-labelledby="map-heading">
         <div className="map-panel__header">
           <div>
-            <p className="eyebrow">Phase 1B</p>
+            <p className="eyebrow">Phase 1C</p>
             <h1 id="map-heading">城市暂停键 — Development</h1>
           </div>
           <p className={`map-status map-status--${mapStatus}`} aria-live="polite">
@@ -409,6 +479,67 @@ export function BaiduMap() {
                 </li>
               ))}
             </ol>
+          )}
+        </section>
+
+        <section className="probe-card">
+          <div className="probe-card__heading">
+            <div>
+              <p className="eyebrow">Direction API v2</p>
+              <h2>真实步行路线</h2>
+            </div>
+            <span className={`status-chip status-chip--${routeState.status}`}>
+              {routeState.status}
+            </span>
+          </div>
+          <p aria-live="polite">{routeState.message}</p>
+          {routeState.data && (
+            <dl className="fact-list">
+              <div><dt>REAL · 步行距离</dt><dd>{routeState.data.walkingDistanceMeters} m</dd></div>
+              <div><dt>REAL · 原始耗时</dt><dd>{routeState.data.walkingDurationSeconds} s</dd></div>
+              <div><dt>DERIVED · 向上取整</dt><dd>{routeState.data.walkingMinutes} min</dd></div>
+              <div><dt>REAL · 路段数</dt><dd>{routeState.data.stepCount}</dd></div>
+            </dl>
+          )}
+          {routeState.data && (
+            <div className="raw-fields">
+              <strong>路线字段名与运行时类型</strong>
+              <code>{(routeState.data.observedRouteFields ?? []).join(", ")}</code>
+              <strong>路段字段名与运行时类型</strong>
+              <code>{(routeState.data.observedStepFields ?? []).join(", ")}</code>
+            </div>
+          )}
+        </section>
+
+        <section className="probe-card">
+          <div className="probe-card__heading">
+            <div>
+              <p className="eyebrow">Place API v3 · scope 2</p>
+              <h2>真实地点详情</h2>
+            </div>
+            <span className={`status-chip status-chip--${detailState.status}`}>
+              {detailState.status}
+            </span>
+          </div>
+          <p aria-live="polite">{detailState.message}</p>
+          {detailState.data && (
+            <dl className="fact-list">
+              <div><dt>REAL · 地点</dt><dd>{detailState.data.name}</dd></div>
+              <div><dt>OPTIONAL · 标签</dt><dd>{detailState.data.classifiedTag ?? detailState.data.categoryTag ?? "unknown"}</dd></div>
+              <div><dt>OPTIONAL · 营业时间</dt><dd>{detailState.data.shopHours ?? "unknown"}</dd></div>
+              <div><dt>OPTIONAL · 营业状态</dt><dd>{detailState.data.businessStatus ?? "unknown"}</dd></div>
+              <div><dt>OPTIONAL · 评分</dt><dd>{detailState.data.overallRating ?? "unknown"}</dd></div>
+              <div><dt>OPTIONAL · 价格</dt><dd>{detailState.data.price ?? "unknown"}</dd></div>
+              <div><dt>OPTIONAL · 室内楼层</dt><dd>{detailState.data.indoorFloor ?? "unknown"}</dd></div>
+            </dl>
+          )}
+          {detailState.data && (
+            <div className="raw-fields">
+              <strong>详情字段名与运行时类型</strong>
+              <code>{(detailState.data.observedFields ?? []).join(", ")}</code>
+              <strong>detail_info 字段名与运行时类型</strong>
+              <code>{(detailState.data.observedDetailFields ?? []).join(", ")}</code>
+            </div>
           )}
         </section>
       </aside>

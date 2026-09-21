@@ -222,6 +222,32 @@ h1 {
   line-height: 1.4;
 }
 
+.fact-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0 0;
+}
+
+.fact-list div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 0.65rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #edf0ed;
+}
+
+.fact-list dt {
+  color: #6a756e;
+  font-size: 0.75rem;
+}
+
+.fact-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
