@@ -170,10 +170,20 @@ Time Allocation v0.2：
 - CandidatePlan 的 stayMinutes、bufferMinutes、totalMinutes、remainingMinutes 是唯一显示来源，页面和复制文本不再硬编码 3 分钟。
 - 时间不足在 hard constraints 阶段过滤，不压缩真实路线，不生成小于最低停留的假可行方案。
 
-## B2 发现元数据交接提案
+## B2 发现元数据交接（A3 已接通）
 
-DiscoverySnapshot.result.candidates 已完整保留 DiscoveredCandidate[]，可直接作为 A 的发现输入。现有 createRealCandidateData 仍只接收 poi/pois/routes，prepareRealPlan 在该边界映射为 MapPOI[]，因此推荐核心尚未收到发现元数据。
+DiscoverySnapshot.result.candidates 完整保留 DiscoveredCandidate[]。A3 的 RealCandidateInput / CandidateData 已增加可选 discoveredCandidates；prepareRealPlan 的普通路径和硬约束提前返回路径均传入该字段，不再仅映射成 MapPOI[] 丢弃发现来源。
 
-CONTRACT_PROPOSAL（待 A 审阅，未修改推荐模型）：RealCandidateInput 增加可选 discoveredCandidates: DiscoveredCandidate[]，CandidateData 增加同名可选字段；若与 pois 同时提供，按 provider + providerId 校验一致性，发现输入必须为 REAL。原 poi/pois 调用兼容；不要把 discoveryPriority 或 matchedSearchCategories 写进 MapPOI，也不要从它们补造 kind 或消费属性。A 在后续阶段显式消费，B 不定义偏好权重、评分或 Top 3。
+若与 pois 同时提供，按 provider + providerId、坐标和集合校验一致性；发现输入必须为 REAL，类别及 priority 必须属于 canonical 枚举。旧 poi/pois 调用兼容；discoveryPriority 或 matchedSearchCategories 不写进 MapPOI，不补造 kind 或消费属性。A 使用发现类别做偏好及多样性匹配，discoveryPriority 不进入 score。
 
 本轮审计、公开区域实测和限制见 docs/PHASE_B2_REVISION.md。
+
+## A3 Recommendation Algorithm v0.2
+
+实际链路：UserIntent → A SearchPolicy → B 多类别 Discovery → DiscoveredCandidate[] → B 有限真实路线评估 → Real Candidate Provider → A hard constraints → preference/activity/mobility utility → quality gate → diversity reranking → 最多三个 REAL Recommendation → 既有 Planner。
+
+- Utility = 40 × preference + 30 × activityBenefit − 20 × mobilityBurden；活动收益边际递减，35 分钟封顶；移动比例是负担，不因散步偏好奖励更长到达路线。
+- Quality gate = max(0, bestUtility − 18)，再做策略调整及基于地点/类别重合的多样性扣分。允许少于三个，不保证每类一个；这些是 A 的首版产品权重，尚未完成真实用户效果调优。
+- Recommendation 可选 scoreTrace 记录 0.2 版本、hardConstraints: passed、类别来源、component、贡献、质量门槛与最终 selectionScore。UI 无需展示 trace，保留现有渲染字段。
+- 默认 open_ended、动态停留/缓冲、失败过滤及 REAL/MOCK 来源边界保持不变。真实模式仍为单地点备选，不查询站间路线。
+- A3 原交付报告记录的是当时尚未接线的状态；最终整合与验证以 docs/PHASE_A3_INTEGRATION.md 为准。

@@ -53,7 +53,7 @@ export async function prepareRealPlan(
   const routes: RouteResult[] = [];
   // These guarantees cannot be established from discovery metadata alone.
   if (intent.avoidCost || intent.excludedKinds.length) {
-    return createRealCandidateData({ origin: snapshot.origin, pois: places.map(candidate => candidate.poi), routes });
+    return createRealCandidateData({ origin: snapshot.origin, discoveredCandidates: places, routes });
   }
   let requests = 0;
   const route = async (from: RouteEndpoint, to: RouteEndpoint, destinationUid?: string) => {
@@ -82,7 +82,7 @@ export async function prepareRealPlan(
       routes.push(await route(destination, snapshot.origin));
     }
   }
-  const data = createRealCandidateData({ origin: snapshot.origin, pois: places.map(candidate => candidate.poi), routes });
+  const data = createRealCandidateData({ origin: snapshot.origin, discoveredCandidates: places, routes });
   if (places.length && !routes.some(result => result.status === "success" && result.from.id === snapshot.origin.id)) {
     throw new Error("候选地点的真实去程路线均不可用，请稍后重试。没有使用模拟路线。");
   }

@@ -39,6 +39,21 @@ describe("multi-category real planning", () => {
     expect(plans).toHaveLength(3);
     expect(plans.every(plan => plan.source === "real" && plan.totalMinutes === 30)).toBe(true);
     expect(plans.every(plan => plan.places[0].kind === undefined && plan.costStatus === "unknown")).toBe(true);
+    expect(data.discoveredCandidates).toEqual(selectRouteCandidates(intent(), snapshot));
+    expect(plans.every(plan => plan.scoreTrace?.categorySource === "discovery")).toBe(true);
+    expect(new Set(plans.flatMap(plan => plan.scoreTrace?.categories ?? [])).size).toBe(3);
+  });
+
+  it("passes real discovery metadata through routes, hard constraints and A3 preference scoring", async () => {
+    const walk = { ...intent(), activity: "walk" as const, source: { ...intent().source, activity: "button" as const } };
+    const fetchRoute = vi.fn(async (request: WalkingRequest) => successful(request, request.to.id.startsWith("park") ? 6 : 2));
+    const data = await prepareRealPlan(walk, snapshot, new Map(), new AbortController().signal, fetchRoute, noPause);
+    expect(new Set(data.discoveredCandidates?.flatMap(candidate => candidate.matchedSearchCategories)).size).toBe(5);
+    const plans = buildRecommendations(walk, data);
+    expect(plans).toHaveLength(2);
+    expect(plans.every(plan => plan.scoreTrace?.categories.includes("park") && plan.scoreTrace.hardConstraints === "passed")).toBe(true);
+    expect(fetchRoute.mock.calls.every(([request]) => request.from.id === "origin")).toBe(true);
+    expect(data.places.every(place => place.categories === undefined)).toBe(true);
   });
 
   it("changes the route shortlist with the latest preferences, without searching again", () => {
@@ -108,6 +123,7 @@ describe("multi-category real planning", () => {
     const free = { ...intent(), avoidCost: true };
     const data = await prepareRealPlan(free, snapshot, new Map(), new AbortController().signal, fetchRoute, noPause);
     expect(fetchRoute).not.toHaveBeenCalled();
+    expect(data.discoveredCandidates?.length).toBeGreaterThan(0);
     expect(buildRecommendations(free, data)).toEqual([]);
   });
 });
