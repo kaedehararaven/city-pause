@@ -3,6 +3,7 @@ import type { SuccessfulRouteResult } from "../contracts/map";
 import type { CandidateData, CandidatePlace, CandidatePlan, Recommendation, UserIntent, PlanStep } from "./model";
 
 type StrategyId = Recommendation["strategyId"];
+export const bufferForBudget = (minutes: number) => Math.max(3, Math.min(10, Math.round(minutes / 10)));
 const strategies: { id: StrategyId; label: string; reason: string }[] = [
   { id: "easy", label: "轻松一点", reason: "先比较步行时间，再比较可停留时间" },
   { id: "balanced", label: "松弛漫步", reason: "优先两站且步行与停留都留有空间" },
@@ -78,7 +79,7 @@ export function buildRecommendations(intent: UserIntent, data: CandidateData): R
     const returnMinutes = returnRoute?.walkingMinutes ?? 0;
     moving += returnMinutes;
     if (returnRoute) usedRoutes.push(returnRoute);
-    const buffer = 3;
+    const buffer = bufferForBudget(budget);
     const minimumStay = stops.reduce((sum, place) => sum + place.minimumStayMinutes, 0);
     if (moving + minimumStay + buffer > budget) return;
     const stays = stops.map((place) => place.minimumStayMinutes);
@@ -86,7 +87,7 @@ export function buildRecommendations(intent: UserIntent, data: CandidateData): R
     while (remaining > 0) {
       let added = false;
       for (let index = 0; index < stops.length && remaining > 0; index++) {
-        if (stays[index] < stops[index].suggestedStayMinutes) {
+        if (stops[index].stayAllocation === "flexible" || stays[index] < stops[index].suggestedStayMinutes) {
           stays[index]++;
           remaining--;
           added = true;
@@ -148,7 +149,12 @@ export function buildRecommendations(intent: UserIntent, data: CandidateData): R
     used.add(combination(best));
     const { categoryCount: _categoryCount, ...recommendation } = best;
     void _categoryCount;
-    chosen.push({ ...recommendation, strategyId: strategy.id, strategyLabel: strategy.label, strategyReason: strategy.reason });
+    const reason = best.source === "real" && best.places.length === 1 && strategy.id !== "easy"
+      ? strategy.id === "balanced"
+        ? "本次安排一个地点，步行以外的时间用于停留与缓冲"
+        : "提供另一处路线与预算均已核对的可行地点"
+      : strategy.reason;
+    chosen.push({ ...recommendation, strategyId: strategy.id, strategyLabel: strategy.label, strategyReason: reason });
   }
   return chosen;
 }

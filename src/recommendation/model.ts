@@ -36,6 +36,7 @@ export type CandidatePlace = MapPOI & {
   costRequired?: boolean;
   minimumStayMinutes: number;
   suggestedStayMinutes: number;
+  stayAllocation?: "flexible";
 };
 export type CandidateData = {
   source: MapDataSource;

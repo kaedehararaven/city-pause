@@ -3,6 +3,21 @@ import { describe, expect, it } from "vitest";
 import { adaptBaiduLocalResultPoi, mergeBaiduPlaceDetail } from "./poiAdapter";
 
 describe("Baidu MapPOI adapter", () => {
+  it("removes provider highlighting before splitting category text", () => {
+    const adapted = adaptBaiduLocalResultPoi({
+      uid: "example", title: "示例地点", point: { lat: 39.9, lng: 116.4 },
+      tags: ['<font color="#c60a00">购物</font>;综合商场;<font color="#c60a00">购物中心</font>'],
+    } as unknown as BMap.LocalResultPoi);
+    expect(adapted?.categories).toEqual(["购物", "综合商场", "购物中心"]);
+  });
+  it("rejects invalid coordinate ranges and non-string identities", () => {
+    expect(adaptBaiduLocalResultPoi({
+      uid: "example", title: "示例", point: { lat: 91, lng: 116.4 },
+    } as unknown as BMap.LocalResultPoi)).toBeNull();
+    expect(adaptBaiduLocalResultPoi({
+      uid: 123, title: "示例", point: { lat: 39.9, lng: 116.4 },
+    } as unknown as BMap.LocalResultPoi)).toBeNull();
+  });
   it("maps verified Baidu fields into canonical MapPOI v0.1", () => {
     const rawPoi = {
       uid: "provider-id",

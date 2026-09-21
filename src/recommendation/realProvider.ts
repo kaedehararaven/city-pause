@@ -3,7 +3,8 @@ import type { CandidateData, CandidateProvider } from "./model";
 
 export type RealCandidateInput = {
   origin: RouteEndpoint & { name: string };
-  poi: MapPOI;
+  poi?: MapPOI;
+  pois?: MapPOI[];
   routes: RouteResult[];
 };
 
@@ -12,25 +13,27 @@ export type RealCandidateInput = {
 const defaultStayPolicy = {
   minimumStayMinutes: 5,
   suggestedStayMinutes: 15,
+  stayAllocation: "flexible",
 } as const;
 
 export function createRealCandidateData(input: RealCandidateInput): CandidateData {
-  if (input.poi.source !== "real") {
+  const pois = input.pois ?? (input.poi ? [input.poi] : []);
+  if (pois.some(poi => poi.source !== "real" || poi.provider !== "baidu")) {
     throw new Error("Real candidate provider requires a real MapPOI");
   }
 
   return {
     source: "real",
     origin: input.origin,
-    places: [
-      {
-        ...input.poi,
-        categoryLabel: input.poi.categories?.join(" / "),
+    places: pois.map(poi =>
+      ({
+        ...poi,
+        categoryLabel: poi.categories?.join(" / "),
         // kind and costRequired stay unknown until a separate, explicit rule or
         // trustworthy data source supplies them.
         ...defaultStayPolicy,
-      },
-    ],
+      }),
+    ),
     routes: input.routes,
   };
 }

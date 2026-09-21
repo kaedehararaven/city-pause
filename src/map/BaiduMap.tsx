@@ -14,6 +14,9 @@ import {
 } from "./poiAdapter";
 
 import type { ReturnMode } from "../recommendation/model";
+import type { SearchPolicy } from "../contracts/search";
+import { DiscoveryPanel } from "./DiscoveryPanel";
+import type { DiscoverySnapshot } from "../contracts/discovery";
 
 export type RealMapIntegrationState =
   | { status: "idle" | "loading" | "error"; message: string }
@@ -104,10 +107,14 @@ function locationFailure(status: number): {
 }
 
 export function BaiduMap({
+  searchPolicy,
+  onDiscoveryChange,
   returnMode,
   onRealIntegrationChange,
 }: {
   returnMode: ReturnMode;
+  searchPolicy: SearchPolicy | null;
+  onDiscoveryChange: (snapshot: DiscoverySnapshot | null) => void;
   onRealIntegrationChange?: (state: RealMapIntegrationState) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -527,6 +534,31 @@ export function BaiduMap({
       </section>
 
       <aside className="probe-panel" aria-label="定位与公园 POI 数据探测">
+        <DiscoveryPanel
+          onDiscoveryChange={(snapshot) => {
+            if (snapshot && BMapRef.current && mapRef.current) {
+              const api = BMapRef.current;
+              const map = mapRef.current;
+              const point = new api.Point(snapshot.origin.location.longitude, snapshot.origin.location.latitude);
+              if (currentLocationMarkerRef.current) map.removeOverlay(currentLocationMarkerRef.current);
+              const marker = new api.Marker(point);
+              marker.setTitle(snapshot.origin.name);
+              map.addOverlay(marker);
+              map.centerAndZoom(point, 16);
+              currentLocationMarkerRef.current = marker;
+            }
+            onDiscoveryChange(snapshot);
+          }}
+          api={mapStatus === "success" ? BMapRef.current : null}
+          policy={searchPolicy}
+          publicCenter={{
+            latitude: developmentCenter.latitude,
+            longitude: developmentCenter.longitude,
+            coordinateSystem: "BD-09",
+          }}
+        />
+        <details>
+          <summary>旧版单公园探测（独立诊断，不用于生成计划）</summary>
         <section className="probe-card">
           <div className="probe-card__heading">
             <div>
@@ -650,6 +682,7 @@ export function BaiduMap({
             </div>
           )}
         </section>
+        </details>
       </aside>
     </main>
   );

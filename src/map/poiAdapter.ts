@@ -12,6 +12,8 @@ function uniqueText(values: unknown[]): string[] | undefined {
     new Set(
       values
         .filter((value): value is string => typeof value === "string")
+        // LocalSearch may wrap matched tag text in font highlighting.
+        .map((value) => value.replace(/<\/?font\b[^>]*>/gi, ""))
         .flatMap((value) => value.split(/[;/]/))
         .map((value) => value.trim())
         .filter(Boolean),
@@ -24,11 +26,12 @@ export function adaptBaiduLocalResultPoi(
   poi: BMap.LocalResultPoi,
 ): MapPOI | null {
   if (
-    !poi.uid ||
-    !poi.title ||
+    typeof poi.uid !== "string" || !poi.uid.trim() ||
+    typeof poi.title !== "string" || !poi.title.trim() ||
     !poi.point ||
     !Number.isFinite(poi.point.lng) ||
-    !Number.isFinite(poi.point.lat)
+    !Number.isFinite(poi.point.lat) ||
+    Math.abs(poi.point.lat) > 90 || Math.abs(poi.point.lng) > 180
   ) {
     return null;
   }
