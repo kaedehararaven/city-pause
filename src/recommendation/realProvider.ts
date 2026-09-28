@@ -4,6 +4,7 @@ import { SEARCH_CATEGORIES } from "../contracts/search";
 import type { CandidateData, CandidateProvider } from "./model";
 
 export type RealCandidateInput = {
+  travelMode?: import("../contracts/map").TravelMode;
   origin: RouteEndpoint & { name: string };
   poi?: MapPOI;
   pois?: MapPOI[];
@@ -39,7 +40,7 @@ export function createRealCandidateData(input: RealCandidateInput): CandidateDat
           candidate.poi.location.latitude !== poi.location.latitude ||
           candidate.poi.location.longitude !== poi.location.longitude ||
           candidate.poi.location.coordinateSystem !== poi.location.coordinateSystem ||
-          !candidate.matchedSearchCategories.every(category => SEARCH_CATEGORIES.includes(category)) ||
+          !candidate.matchedSearchCategories.every(category => SEARCH_CATEGORIES.includes(category as typeof SEARCH_CATEGORIES[number])) ||
           !["high", "medium", "low"].includes(candidate.discoveryPriority)) {
         throw new Error("Invalid or inconsistent discovery metadata");
       }
@@ -48,6 +49,7 @@ export function createRealCandidateData(input: RealCandidateInput): CandidateDat
   }
 
   return {
+    travelMode: input.travelMode ?? "walking",
     source: "real",
     origin: input.origin,
     places: pois.map(poi =>

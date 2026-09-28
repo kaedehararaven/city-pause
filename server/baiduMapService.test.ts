@@ -4,6 +4,7 @@ import {
   BaiduProviderError,
   adaptPlaceDetail,
   adaptWalkingRoute,
+  safePlaceDetailUrl,
 } from "./baiduMapService.js";
 
 describe("adaptWalkingRoute", () => {
@@ -89,6 +90,37 @@ describe("adaptWalkingRoute", () => {
 });
 
 describe("adaptPlaceDetail", () => {
+  it("keeps bounded child facts and navigation points separate from the main coordinate", () => {
+    const child = { uid: "gate", name: "示例北门", classified_poi_tag: "出入口", location: { lat: 30.1, lng: 120.1 }, secret: "not-forwarded" };
+    const result = adaptPlaceDetail({ status: 0, result: {
+      uid: "parent", name: "示例公园", location: { lat: 30, lng: 120 },
+      detail_info: { brand: "品牌", price: "80", best_time: "春秋", detail_url: "http://map.baidu.com/detail?uid=example",
+        navi_location: { lat: 30.2, lng: 120.2 }, children: [child, child, { uid: "missing-name" },
+          { uid: "bad-point", name: "子地点", location: { lat: 100, lng: 120 } }] },
+    } });
+    expect(result).toMatchObject({ brand: "品牌", price: "80", bestTime: "春秋", detailUrl: "https://map.baidu.com/detail?uid=example" });
+    expect(result.location?.latitude).toBe(30);
+    expect(result.navigationLocation?.latitude).toBe(30.2);
+    expect(result.subPlaces).toHaveLength(2);
+    expect(result.subPlaces?.[0].categories).toEqual(["出入口"]);
+    expect(result.subPlaces?.[0]).not.toHaveProperty("secret");
+    expect(result.subPlaces?.[1].location).toBeUndefined();
+    const many = adaptPlaceDetail({ status: 0, result: { uid: "parent", name: "示例", detail_info: {
+      children: Array.from({ length: 50 }, (_, index) => ({ uid: String(index), name: "子地点" })),
+    } } });
+    expect(many.subPlaces).toHaveLength(20);
+  });
+  it("rejects unsafe links and absent or malformed extended fields", () => {
+    expect(safePlaceDetailUrl("http://api.map.baidu.com/place/detail?uid=example&output=html")).toBe("https://api.map.baidu.com/place/detail?uid=example&output=html");
+    for (const url of ["javascript:alert(1)", "https://map.baidu.com.evil.test/", "https://user:pass@map.baidu.com/", "https://map.baidu.com/?ak=example", "https://other.test/", "https://api.map.baidu.com/place/v3/detail"]) {
+      expect(safePlaceDetailUrl(url)).toBeUndefined();
+    }
+    const result = adaptPlaceDetail({ status: 0, result: { uid: "p", name: "示例", detail_info: {
+      brand: {}, price: [], best_time: null, children: "invalid", navi_location: { lat: "30", lng: 120 },
+    } } });
+    expect(result.brand).toBeUndefined(); expect(result.price).toBeUndefined();
+    expect(result.subPlaces).toBeUndefined(); expect(result.navigationLocation).toBeUndefined();
+  });
   it("adapts documented detail fields", () => {
     expect(
       adaptPlaceDetail({

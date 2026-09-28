@@ -1,12 +1,12 @@
 import type { CandidateDiscoveryResult, DiscoveryCategoryResult, DiscoveryRequest } from "../contracts/discovery";
 import type { MapPOI } from "../contracts/map";
 import { SEARCH_CATEGORIES } from "../contracts/search";
-import { baiduQueryFor, DISCOVERY_LIMITS, PRIORITY_ORDER } from "./searchMapping";
+import { baiduQueryFor, DISCOVERY_LIMITS } from "./searchMapping";
 
 export type DiscoveryQueryResult =
-  | { status: "success" | "empty"; pois: MapPOI[]; totalReported: number; inspectedCount: number }
-  | { status: "provider_error" | "timeout" };
-export type DiscoverySearch = (query: string, signal: AbortSignal) => Promise<DiscoveryQueryResult>;
+  | { status: "success" | "empty"; pois: MapPOI[]; totalReported: number; inspectedCount: number; rawResultCount?: number; rawResultSetCount?: number; adapterInputCount?: number; errorCode?: string }
+  | { status: "provider_error" | "timeout"; errorCode?: string };
+export type DiscoverySearch = (query: string | string[], signal: AbortSignal) => Promise<DiscoveryQueryResult>;
 
 export function validDiscoveryCenter(center: DiscoveryRequest["center"]) {
   return center.coordinateSystem === "BD-09" &&
@@ -24,7 +24,7 @@ export async function discoverCandidates(
       !Number.isInteger(policy.availableMinutes) || policy.availableMinutes < 5 || policy.availableMinutes > 180 ||
       !Array.isArray(policy.entries) || policy.entries.length > SEARCH_CATEGORIES.length ||
       new Set(policy.entries.map(entry => entry.category)).size !== policy.entries.length ||
-      policy.entries.some(entry => !baiduQueryFor(entry.category) || !Object.hasOwn(PRIORITY_ORDER, entry.priority))) {
+      policy.entries.some(entry => !baiduQueryFor(entry.category) || !["high", "medium", "low"].includes(entry.priority))) {
     throw new RangeError("Invalid discovery request");
   }
   const result: CandidateDiscoveryResult = { source: "real", status: "empty", candidates: [], categories: [] };
@@ -33,9 +33,7 @@ export async function discoverCandidates(
     report: DiscoveryCategoryResult;
     identities: string[];
   }> = [];
-  const entries = [...policy.entries].sort((a, b) =>
-    PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority] ||
-    SEARCH_CATEGORIES.indexOf(a.category) - SEARCH_CATEGORIES.indexOf(b.category));
+  const entries = [...policy.entries];
 
   for (const entry of entries) {
     signal.throwIfAborted();
@@ -85,20 +83,21 @@ export async function discoverCandidates(
       identities.set(identity, candidate);
     }
   }
-  // Round-robin within deterministic priority order avoids starving later categories.
+  // Basic supply: up to four unique observations per search category. A POI
+  // shared by categories is represented once and retains all provenance.
   const selected = new Set<string>();
-  for (let round = 0; round < DISCOVERY_LIMITS.categorySize.high; round++) {
-    for (const category of categoryCandidates) {
-      if (round >= DISCOVERY_LIMITS.categorySize[category.report.priority] ||
-          result.candidates.length >= DISCOVERY_LIMITS.poolSize) continue;
-      const identity = category.identities.find(key => !selected.has(key));
-      if (!identity) continue;
-      selected.add(identity);
-      result.candidates.push(identities.get(identity)!);
+  for (const category of categoryCandidates) {
+    let kept = 0;
+    for (const identity of category.identities) {
+      if (kept >= DISCOVERY_LIMITS.perCategoryLimit) break;
+      if (!selected.has(identity)) { selected.add(identity); result.candidates.push(identities.get(identity)!); }
+      kept++;
       category.report.retainedCount++;
     }
   }
   const failures = result.categories.filter(category => category.status === "provider_error" || category.status === "timeout").length;
+  result.observations = { searchedQueries: result.categories.length,
+    validCount: result.categories.reduce((sum, category) => sum + category.validCount, 0), uniqueCandidates: [...identities.values()] };
   result.status = failures === result.categories.length && failures > 0 ? "error" :
     failures > 0 ? "partial_success" : result.candidates.length ? "success" : "empty";
   return result;

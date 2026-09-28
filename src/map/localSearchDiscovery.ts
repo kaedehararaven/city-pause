@@ -4,7 +4,7 @@ import type { DiscoverySearch, DiscoveryQueryResult } from "./discovery";
 import { validDiscoveryCenter } from "./discovery";
 import { BAIDU_SEARCH_QUERIES, DISCOVERY_LIMITS } from "./searchMapping";
 
-export function createBaiduDiscoverySearch(api: typeof BMap, center: MapLocation): DiscoverySearch {
+function createSearch(api: typeof BMap, center: MapLocation, radiusMeters: number, allowComposite: boolean): DiscoverySearch {
   let lastStarted = -Infinity;
   return async (query, signal) => {
     signal.throwIfAborted();
@@ -24,23 +24,25 @@ export function createBaiduDiscoverySearch(api: typeof BMap, center: MapLocation
     lastStarted = Date.now();
     return new Promise((resolve, reject) => {
       signal.throwIfAborted();
-      if (!validDiscoveryCenter(center) || !Object.values(BAIDU_SEARCH_QUERIES).some(value => value === query)) {
+      if (!validDiscoveryCenter(center) || !Number.isFinite(radiusMeters) || radiusMeters <= 0 || radiusMeters > 12000 || (!allowComposite && !Object.values(BAIDU_SEARCH_QUERIES).some(value => value === query))) {
         resolve({ status: "provider_error" });
         return;
       }
       let search: BMap.LocalSearch | undefined;
       let settled = false;
-      const finish = (result?: DiscoveryQueryResult) => {
+      const finish = (result?: DiscoveryQueryResult, clearResults = false) => {
         if (settled) return;
         settled = true;
         clearTimeout(timer);
         signal.removeEventListener("abort", abort);
-        search?.clearResults();
+        // Baidu continues processing the result after onSearchComplete returns.
+        // Clearing it inside that callback invalidates SDK internal state.
+        if (!result || clearResults) search?.clearResults();
         if (result) resolve(result);
         else reject(new DOMException("Discovery cancelled", "AbortError"));
       };
       const abort = () => finish();
-      const timer = setTimeout(() => finish({ status: "timeout" }), DISCOVERY_LIMITS.queryTimeoutMs);
+      const timer = setTimeout(() => finish({ status: "timeout" }, true), DISCOVERY_LIMITS.queryTimeoutMs);
       signal.addEventListener("abort", abort, { once: true });
       try {
         const point = new api.Point(center.longitude, center.latitude);
@@ -50,32 +52,39 @@ export function createBaiduDiscoverySearch(api: typeof BMap, center: MapLocation
             if (settled) return;
             try {
               const status = search!.getStatus();
-              const result = Array.isArray(results) ? results[0] : results;
+              const resultSets = Array.isArray(results) ? results : [results];
               if (status === 8) { finish({ status: "timeout" }); return; }
               // UNKNOWN_LOCATION alone does not prove an empty query. Require explicit zero counts.
-              if ((status === 0 || status === 2) && result?.getNumPois() === 0 && result.getCurrentNumPois() === 0) {
-                finish({ status: "empty", pois: [], totalReported: 0, inspectedCount: 0 });
+              if ((status === 0 || status === 2) && resultSets.every(result => result.getNumPois() === 0 && result.getCurrentNumPois() === 0)) {
+                finish({ status: "empty", pois: [], totalReported: 0, inspectedCount: 0, rawResultCount: 0, rawResultSetCount: resultSets.length, adapterInputCount: 0 });
                 return;
               }
-              if (status !== 0 || !result) { finish({ status: "provider_error" }); return; }
-              const count = result.getCurrentNumPois();
-              const total = result.getNumPois();
-              if (!Number.isInteger(count) || count < 0 || !Number.isInteger(total) || total < count) {
+              if (status !== 0 || !resultSets.length) { finish({ status: "provider_error" }); return; }
+              const counts = resultSets.map(result => ({ count: result.getCurrentNumPois(), total: result.getNumPois() }));
+              if (counts.some(({ count, total }) => !Number.isInteger(count) || count < 0 || !Number.isInteger(total) || total < count)) {
                 finish({ status: "provider_error" }); return;
               }
-              const inspectedCount = Math.min(count, DISCOVERY_LIMITS.queryPageSize);
-              const pois = Array.from({ length: inspectedCount }, (_, index) => result.getPoi(index))
-                .flatMap(poi => { const adapted = poi && adaptBaiduLocalResultPoi(poi); return adapted ? [adapted] : []; });
-              finish({ status: "success", pois, totalReported: total, inspectedCount });
+              const adapterInputs = resultSets.flatMap((result, resultIndex) => Array.from({ length: counts[resultIndex].count }, (_, index) => result.getPoi(index)));
+              const pois = adapterInputs.flatMap(poi => { const adapted = poi && adaptBaiduLocalResultPoi(poi); return adapted ? [adapted] : []; });
+              finish({ status: "success", pois, totalReported: counts.reduce((sum, item) => sum + item.total, 0), inspectedCount: adapterInputs.length, rawResultCount: adapterInputs.length, rawResultSetCount: resultSets.length, adapterInputCount: adapterInputs.length });
             } catch {
               finish({ status: "provider_error" });
             }
           },
         });
-        search.searchNearby(query, point, DISCOVERY_LIMITS.radiusMeters);
+        search.searchNearby(query, point, radiusMeters);
       } catch {
         finish({ status: "provider_error" });
       }
     });
   };
+}
+
+export function createBaiduDiscoverySearch(api: typeof BMap, center: MapLocation, radiusMeters: number = DISCOVERY_LIMITS.radiusMeters): DiscoverySearch {
+  return createSearch(api, center, radiusMeters, false);
+}
+
+// Goal Supply v3 deliberately performs one LocalSearch action for a whole S or M layer.
+export function createCompositeBaiduDiscoverySearch(api: typeof BMap, center: MapLocation, radiusMeters: number = DISCOVERY_LIMITS.radiusMeters): DiscoverySearch {
+  return createSearch(api, center, radiusMeters, true);
 }

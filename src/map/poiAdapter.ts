@@ -67,11 +67,25 @@ export function mergeBaiduPlaceDetail(
 
   return {
     ...poi,
+    classifiedPoiTag: detail.classifiedTag ?? poi.classifiedPoiTag,
+    parentProviderId: detail.parentId ?? poi.parentProviderId,
+    detailSource: detail.source === "baidu-place-v3-search" ? "place-search-v3" : "place-detail-v3",
+    detailExpiresAt: detail.expiresAt ?? Date.now() + 5 * 60_000,
     address: optionalText(detail.address) ?? poi.address,
     categories: detailCategories,
     openingHours: optionalText(detail.shopHours),
+    telephone: optionalText(detail.telephone),
+    description: optionalText(detail.description),
+    suggestedVisitDuration: optionalText(detail.suggestedTime),
+    indoorFloor: optionalText(detail.indoorFloor),
+    brand: optionalText(detail.brand),
+    priceText: optionalText(detail.price),
+    bestVisitTime: optionalText(detail.bestTime),
+    detailUrl: detail.detailUrl,
+    navigationLocation: detail.navigationLocation,
+    subPlaces: detail.subPlaces,
     rating:
-      parsedRating !== undefined && Number.isFinite(parsedRating)
+      parsedRating !== undefined && Number.isFinite(parsedRating) && parsedRating >= 0 && parsedRating <= 5
         ? parsedRating
         : undefined,
   };

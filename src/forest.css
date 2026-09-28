@@ -1,0 +1,94 @@
+.planner.forest-theme {
+  --paper: #f5f7f2;
+  --ink: #294b3b;
+  --green: #365a41;
+  --muted: #647568;
+  --line: #d5dfd3;
+  background: var(--paper);
+}
+.map-development-access[aria-label="体验方式"] {
+  margin: 0 auto;
+  padding: 9px 0;
+  border: 0;
+  font-size: 12px;
+}
+.map-development-access[aria-label="体验方式"] a { color: #365a41; }
+@scope (.forest-theme) {
+  *, *::before, *::after { letter-spacing: 0; }
+  .nav, main { max-width: 1440px; }
+  .nav { padding-top: 18px; padding-bottom: 18px; }
+  .brand { font-family: "STSong", "SimSun", Georgia, serif; font-size: 22px; }
+  .logo { border-radius: 50%; }
+  .forest-hero {
+    display: grid;
+    place-items: center;
+    min-height: 400px;
+    height: min(520px, 58svh);
+    margin-top: 20px;
+    background: #dbe3cf url('/images/forest-leaf-hero.png') center / cover no-repeat;
+    text-align: center;
+  }
+  .forest-copy { width: min(620px, 80%); padding: 28px 12px; }
+  .forest-kicker { font-size: 11px; color: #536a4e; margin: 0 0 12px; }
+  .forest-copy h1 { font: 400 44px/1.4 "STSong", "SimSun", Georgia, serif; margin: 0; }
+  .forest-question { font: 400 26px/1.6 "STSong", "SimSun", Georgia, serif; margin: 14px 0; }
+  .forest-description { font-size: 13px; color: #536650; line-height: 2; margin: 0 0 20px; }
+  .forest-start { display: inline-flex; align-items: center; gap: 24px; padding: 12px 22px; min-height: 44px; border-radius: 8px; background: var(--green); color: #fff; text-decoration: none; font-size: 13px; }
+  .forest-start:hover { background: #254732; }
+  .forest-footnote { display: block; font-size: 11px; color: #596e50; margin-top: 12px; }
+  .forest-location { margin: 22px 0 28px; }
+  .workspace { grid-template-columns: minmax(270px, .9fr) minmax(320px, 1.4fr) minmax(240px, .8fr); gap: 24px; }
+  .forest-start { border: 0; cursor: pointer; }
+  .forest-hero { min-height: calc(100svh - 160px); }
+  .planner-stage:not([hidden]) { animation: planner-enter .4s ease-out; }
+  .journey-detail { position: sticky; top: 20px; padding: 22px; background: #e8eee4; min-width: 0; overflow-wrap: anywhere; }
+  .journey-detail h2 { font-size: 21px; }
+  .time-ribbon { display: flex; height: 12px; gap: 3px; margin: 20px 0; overflow: hidden; border-radius: 4px; }
+  .time-ribbon span { flex-basis: 0; background: #9bb8ab; }
+  .time-ribbon .step-停留 { background: #c0cf92; }
+  .time-ribbon .step-返程 { background: #acb4d0; }
+  .time-ribbon .step-缓冲 { background: #d7b881; }
+  @media(max-width:1150px) { .workspace { grid-template-columns: 300px minmax(0,1fr); } .journey-detail { position: static; grid-column: 2; } }
+  #planner-input { scroll-margin-top: 20px; }
+  .input-panel { border: 0; border-radius: 0; background: transparent; padding: 20px 24px 24px 0; box-shadow: none; }
+  .input-panel h2, .results h2, .plan h3 { font-family: "STSong", "SimSun", Georgia, serif; }
+  .results { padding-top: 20px; }
+  .times button, textarea, .primary, .plan, .empty, .no-result { border-radius: 8px; }
+  .plan { background: #fff; border-left: 3px solid #87a293; box-shadow: none; }
+  .plan:nth-of-type(3n+2) { border-left-color: #b8a274; }
+  .plan:nth-of-type(3n) { border-left-color: #90a7b2; }
+  .plan h3, .route, .reason, .poi-list { overflow-wrap: anywhere; }
+  .plan h3 { font-size: 21px; }
+  .plan-top { border-bottom: 1px dashed var(--line); padding-bottom: 10px; }
+  .empty { background: #edf3ef; border-color: #bacbbd; }
+  .empty p, .fine, .route { color: #657668; }
+  .sort-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .sort-controls button { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; background: #fff; color: var(--ink); }
+  .sort-controls button[aria-pressed="true"] { background: var(--green); color: white; border-color: var(--green); }
+  .times { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .custom { flex-wrap: wrap; }
+  .custom select { font: inherit; padding: 8px; max-width: 100%; color: var(--ink); background: white; border: 1px solid var(--line); border-radius: 6px; }
+  .source-select { min-height: 42px; }
+  @media (max-width: 900px) {
+    .workspace { grid-template-columns: 300px minmax(0, 1fr); gap: 20px; }
+    .input-panel { padding-right: 8px; }
+  }
+  @media (max-width: 680px) {
+    main { padding: 0 18px; }
+    .nav { padding: 16px 18px; flex-wrap: wrap; gap: 10px; }
+    .brand { font-size: 19px; }
+    .forest-hero { height: auto; min-height: 420px; margin-top: 12px; background-size: auto 100%; }
+    .forest-copy { width: 94%; padding: 28px 10px; }
+    .forest-copy h1 { font-size: 32px; }
+    .forest-question { font-size: 23px; }
+    .forest-description { font-size: 12px; }
+    .workspace { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .journey-detail { grid-column: 1; }
+    .input-panel { padding: 10px 0 20px; position: static; }
+    .plan-actions { flex-wrap: wrap; }
+    .preferences { flex-wrap: wrap; gap: 16px; }
+    .plan-top { flex-wrap: wrap; }
+  }
+}
+@keyframes planner-enter { from { opacity: 0; transform: scale(.97) translateY(12px); } to { opacity: 1; transform: none; } }
+@media(prefers-reduced-motion:reduce) { .planner-stage { animation: none !important; } }

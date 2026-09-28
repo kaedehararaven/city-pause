@@ -14,9 +14,12 @@ import {
 } from "./poiAdapter";
 
 import type { ReturnMode } from "../recommendation/model";
-import type { SearchPolicy } from "../contracts/search";
+import type { GoalRefreshDiscovery, GoalSupplyPolicy } from "../recommendation/goalCandidateSupply";
+import type { MutableRefObject } from "react";
 import { DiscoveryPanel } from "./DiscoveryPanel";
 import type { DiscoverySnapshot } from "../contracts/discovery";
+import { TempLocationDiagnostics } from "./TempLocationDiagnosticPanel"; // TEMP DEBUG
+import { observeLocation } from "./tempLocationDiagnostics"; // TEMP DEBUG
 
 export type RealMapIntegrationState =
   | { status: "idle" | "loading" | "error"; message: string }
@@ -111,11 +114,13 @@ export function BaiduMap({
   onDiscoveryChange,
   returnMode,
   onRealIntegrationChange,
+  discoveryRequestRef,
 }: {
   returnMode: ReturnMode;
-  searchPolicy: SearchPolicy | null;
-  onDiscoveryChange: (snapshot: DiscoverySnapshot | null) => void;
+  searchPolicy: GoalSupplyPolicy | null;
+  onDiscoveryChange: (snapshot: DiscoverySnapshot | null, refresh?: GoalRefreshDiscovery, internal?: boolean) => void;
   onRealIntegrationChange?: (state: RealMapIntegrationState) => void;
+  discoveryRequestRef?: MutableRefObject<((signal: AbortSignal) => Promise<void>) | null>;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<BMap.Map | null>(null);
@@ -391,6 +396,7 @@ export function BaiduMap({
   }
 
   function restoreDevelopmentFallback(BMapApi: typeof BMap, map: BMap.Map) {
+    if (import.meta.env.DEV) observeLocation("visible", null, "No current marker: development fallback");
     localSearchRef.current?.clearResults();
     localSearchRef.current = null;
 
@@ -473,11 +479,13 @@ export function BaiduMap({
       }
 
       const marker = new BMapApi.Marker(result.point);
+      if (import.meta.env.DEV) observeLocation("sdk", { latitude: result.point.lat, longitude: result.point.lng }, "Legacy park entry: SDK result.point", result.accuracy);
       marker.setTitle("当前位置");
       map.addOverlay(marker);
       map.centerAndZoom(result.point, 16);
 
       currentLocationMarkerRef.current = marker;
+      if (import.meta.env.DEV) observeLocation("visible", null, "Legacy park entry (Planner origin NOT updated)");
       const usableAccuracy =
         typeof result.accuracy === "number" && result.accuracy > 0
           ? result.accuracy
@@ -534,8 +542,9 @@ export function BaiduMap({
       </section>
 
       <aside className="probe-panel" aria-label="定位与公园 POI 数据探测">
+        {import.meta.env.DEV && mapStatus === "success" && BMapRef.current && mapRef.current && <TempLocationDiagnostics api={BMapRef.current} map={mapRef.current} />}
         <DiscoveryPanel
-          onDiscoveryChange={(snapshot) => {
+          onDiscoveryChange={(snapshot, refresh, internal) => {
             if (snapshot && BMapRef.current && mapRef.current) {
               const api = BMapRef.current;
               const map = mapRef.current;
@@ -546,8 +555,9 @@ export function BaiduMap({
               map.addOverlay(marker);
               map.centerAndZoom(point, 16);
               currentLocationMarkerRef.current = marker;
+              if (import.meta.env.DEV) observeLocation("visible", null, "Discovery snapshot.origin: " + snapshot.origin.name);
             }
-            onDiscoveryChange(snapshot);
+            onDiscoveryChange(snapshot, refresh, internal);
           }}
           api={mapStatus === "success" ? BMapRef.current : null}
           policy={searchPolicy}
@@ -556,6 +566,7 @@ export function BaiduMap({
             longitude: developmentCenter.longitude,
             coordinateSystem: "BD-09",
           }}
+          requestRef={discoveryRequestRef}
         />
         <details>
           <summary>旧版单公园探测（独立诊断，不用于生成计划）</summary>

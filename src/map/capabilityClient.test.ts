@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { fetchRequiredRoutes, fetchWalkingRoute } from "./capabilityClient";
+import { fetchCyclingRoute, fetchRequiredRoutes, fetchWalkingRoute, fetchPlaceDetail } from "./capabilityClient";
 
 const location = {
   latitude: 39.9,
@@ -15,7 +15,37 @@ const input = {
 
 afterEach(() => vi.unstubAllGlobals());
 
+describe("safe place detail diagnostics", () => {
+  it("reports provider refusal without echoing response text or identifiers", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ ok: false, providerStatus: 302, error: "private-upstream-message" }, { status: 502 })));
+    await expect(fetchPlaceDetail("test-poi")).rejects.toMatchObject({ code: "provider_302", serviceFailure: true, message: "provider_302" });
+  });
+  it("distinguishes malformed data and mismatched identity", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ ok: true, data: {} })));
+    await expect(fetchPlaceDetail("test-poi")).rejects.toMatchObject({ code: "invalid_response" });
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ ok: true, data: { source: "baidu-place-v3-detail", providerId: "different", name: "synthetic" } })));
+    await expect(fetchPlaceDetail("test-poi")).rejects.toMatchObject({ code: "identity_mismatch" });
+  });
+  it("reports network failures without forwarding arbitrary exception text", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new TypeError("private URL"); }));
+    await expect(fetchPlaceDetail("test-poi")).rejects.toMatchObject({ code: "network_unavailable", message: "network_unavailable" });
+  });
+});
+
 describe("walking RouteResult adapter", () => {
+  it("keeps cycling mode, endpoints and failure facts distinct", async () => {
+    const fetcher = vi.fn().mockImplementation(async () => Response.json({ ok: true, data: {
+      source: "baidu-direction-v2-riding", mode: "cycling", coordinateSystem: "BD-09", distanceMeters: 900, durationSeconds: 300, durationMinutes: 5,
+    } }));
+    vi.stubGlobal("fetch", fetcher);
+    const result = await fetchCyclingRoute(input);
+    expect(result).toMatchObject({ source: "real", provider: "baidu", mode: "cycling", from: input.from, to: input.to, durationSeconds: 300 });
+    expect(result).not.toHaveProperty("walkingMinutes");
+    expect(fetcher.mock.calls[0][0]).toMatch(/^\/api\/map\/cycling-route\?/);
+    fetcher.mockImplementation(async () => Response.json({ ok: false, routeStatus: "no_route" }, { status: 404 }));
+    const failure = await fetchCyclingRoute(input);
+    expect(failure.status).toBe("no_route"); expect(failure).not.toHaveProperty("durationSeconds");
+  });
   it("requests only outbound by default and adds the directed return only on demand", async () => {
     const fetchMock = vi.fn().mockResolvedValue(Response.json({
       ok: true,
@@ -63,6 +93,9 @@ describe("walking RouteResult adapter", () => {
       walkingDistanceMeters: 875,
       walkingDurationSeconds: 601,
       walkingMinutes: 11,
+      distanceMeters: 875,
+      durationSeconds: 601,
+      durationMinutes: 601 / 60,
     });
   });
 

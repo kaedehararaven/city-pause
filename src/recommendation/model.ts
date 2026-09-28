@@ -4,10 +4,12 @@ import type {
   RouteEndpoint,
   RouteResult,
   SuccessfulRouteResult,
+  TravelMode,
 } from "../contracts/map";
 
 import type { DiscoveredCandidate } from "../contracts/discovery";
 import type { ScoreTrace } from "./utility";
+import type { DecisionTrace, Goal, Preferences } from "./decisionTypes";
 
 export type ReturnMode = "open_ended" | "return_to_start";
 
@@ -15,6 +17,9 @@ export type Activity = "rest" | "walk" | "explore";
 export type OriginOfIntent = "form" | "button" | "checkbox" | "text-rule" | "default" | "unspecified";
 
 export type UserIntent = {
+  goal?: Goal;
+  preferences?: Preferences;
+  maxWalkingMinutes?: { strength: "MUST"; value: number };
   availableMinutes: number;
   activity: Activity;
   returnMode: ReturnMode;
@@ -42,6 +47,8 @@ export type CandidatePlace = MapPOI & {
   stayAllocation?: "flexible";
 };
 export type CandidateData = {
+  travelMode?: TravelMode;
+  routePreparationAudit?: import("../contracts/mobility").RoutePreparationAudit;
   source: MapDataSource;
   origin: RouteEndpoint & { name: string };
   places: CandidatePlace[];
@@ -53,8 +60,14 @@ export type CandidateProvider = {
   source: MapDataSource;
   getCandidateData: () => CandidateData;
 };
-export type PlanStep = { kind: "步行" | "停留" | "返程" | "缓冲"; label: string; minutes: number };
+export type PlanStep = { kind: "步行" | "骑行" | "停留" | "返程" | "缓冲"; label: string; minutes: number };
 export type CandidatePlan = {
+  goalMatch?: "S" | "M" | "W";
+  travelMode: TravelMode;
+  travelMinutes: number;
+  travelDurationSeconds: number;
+  outboundTravelSeconds: number;
+  returnTravelSeconds?: number;
   id: string;
   title: string;
   places: CandidatePlace[];
@@ -76,8 +89,10 @@ export type CandidatePlan = {
   categoryCount: number;
 };
 export type Recommendation = Omit<CandidatePlan, "categoryCount"> & {
-  strategyId: "easy" | "balanced" | "explore";
+  strategyId: "default" | "easy" | "balanced" | "explore";
   strategyLabel: string;
   strategyReason: string;
   scoreTrace?: ScoreTrace;
+  decisionTrace?: DecisionTrace;
+  costCaveat?: string;
 };

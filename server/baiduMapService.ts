@@ -18,7 +18,8 @@ export type TemporaryWalkingRoute = {
 };
 
 export type TemporaryPlaceDetail = {
-  source: "baidu-place-v3-detail";
+  source: "baidu-place-v3-detail" | "baidu-place-v3-search";
+  parentId?: string;
   providerId: string;
   name: string;
   location?: {
@@ -43,6 +44,16 @@ export type TemporaryPlaceDetail = {
   bestTime?: string;
   suggestedTime?: string;
   description?: string;
+  brand?: string;
+  navigationLocation?: { latitude: number; longitude: number; coordinateSystem: "BD-09" };
+  subPlaces?: Array<{
+    providerId: string;
+    name: string;
+    classifiedPoiTag?: string;
+    categories?: string[];
+    location?: { latitude: number; longitude: number; coordinateSystem: "BD-09" };
+    address?: string;
+  }>;
   observedFields: string[];
   observedDetailFields: string[];
 };
@@ -78,6 +89,42 @@ function finiteNonNegative(value: unknown): number | undefined {
 
 function finiteNumber(value: unknown): number | undefined {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function detailLocation(value: unknown): TemporaryPlaceDetail["location"] {
+  if (!isObject(value)) return undefined;
+  const latitude = finiteNumber(value.lat), longitude = finiteNumber(value.lng);
+  return latitude !== undefined && longitude !== undefined && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180
+    ? { latitude, longitude, coordinateSystem: "BD-09" } : undefined;
+}
+
+export function safePlaceDetailUrl(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  try {
+    const url = new URL(value);
+    const officialPage = url.hostname === "map.baidu.com" ||
+      (url.hostname === "api.map.baidu.com" && url.pathname === "/place/detail");
+    if (!["https:", "http:"].includes(url.protocol) || !officialPage || url.username || url.password || url.port) return undefined;
+    if ([...url.searchParams.keys()].some(key => /^(ak|key|token|access_token|authorization)$/i.test(key))) return undefined;
+    url.protocol = "https:";
+    return url.toString();
+  } catch { return undefined; }
+}
+
+function detailChildren(value: unknown): TemporaryPlaceDetail["subPlaces"] {
+  if (!Array.isArray(value)) return undefined;
+  const seen = new Set<string>();
+  const children = value.slice(0, 100).flatMap(child => {
+    if (!isObject(child)) return [];
+    const providerId = optionalText(child.uid), name = optionalText(child.name) ?? optionalText(child.show_name);
+    if (!providerId || !name || seen.has(providerId)) return [];
+    seen.add(providerId);
+    const categories = [...new Set([child.classified_poi_tag, child.std_tag].flatMap(tag =>
+      optionalText(tag)?.split(/[;/]/).map(part => part.trim()).filter(Boolean) ?? []))];
+    return [{ providerId, name, classifiedPoiTag: optionalText(child.classified_poi_tag), categories: categories.length ? categories : undefined,
+      location: detailLocation(child.location), address: optionalText(child.address) }];
+  }).slice(0, 20);
+  return children.length ? children : undefined;
 }
 
 function providerStatus(payload: JsonObject): number | undefined {
@@ -210,8 +257,12 @@ export function adaptPlaceDetail(payload: unknown): TemporaryPlaceDetail {
     businessStatus: explicitBusinessStatus,
     categoryTag: optionalText(detailInfo?.tag),
     classifiedTag: optionalText(detailInfo?.classified_poi_tag),
+    parentId: optionalText(detailInfo?.parent_id),
     providerType: optionalText(detailInfo?.type),
-    detailUrl: optionalText(detailInfo?.detail_url),
+    detailUrl: safePlaceDetailUrl(detailInfo?.detail_url),
+    brand: optionalText(detailInfo?.brand),
+    navigationLocation: detailLocation(detailInfo?.navi_location),
+    subPlaces: detailChildren(detailInfo?.children),
     shopHours: optionalText(detailInfo?.shop_hours),
     price: optionalText(detailInfo?.price),
     overallRating: optionalText(detailInfo?.overall_rating),
@@ -289,6 +340,36 @@ export async function getWalkingRoute(
   return adaptWalkingRoute(payload);
 }
 
+export function adaptPlaceSearch(payload: unknown): { places: TemporaryPlaceDetail[]; total: number; rawResultCount: number } {
+  if (!isObject(payload) || providerStatus(payload) !== 0) throw new BaiduProviderError("Place search failed", isObject(payload) ? providerStatus(payload) : undefined);
+  if (!Array.isArray(payload.results)) throw new BaiduProviderError("Invalid search results");
+  const places = payload.results.flatMap(item => {
+    try {
+      const detail = adaptPlaceDetail({ status: 0, results: [item] });
+      return detail.location ? [{ ...detail, source: "baidu-place-v3-search" as const }] : [];
+    } catch { return []; }
+  });
+  return { places, total: typeof payload.total === "number" ? payload.total : payload.results.length, rawResultCount: payload.results.length };
+}
+
+export async function getPlaceAround(input: { keywords: string[]; latitude: number; longitude: number; radius: number; page?: number }, serverAk: string, fetchImpl: FetchLike = fetch) {
+  const payload = await fetchBaiduJson("/place/v3/around", {
+    query: input.keywords.join("$"), location: `${input.latitude},${input.longitude}`, radius: String(input.radius),
+    scope: "2", page_size: "20", page_num: String(input.page ?? 0), coord_type: "3", radius_limit: "true", output: "json",
+  }, serverAk, fetchImpl);
+  return adaptPlaceSearch(payload);
+}
+
+export async function getPlaceDetails(uids: string[], serverAk: string, fetchImpl: FetchLike = fetch): Promise<TemporaryPlaceDetail[]> {
+  const payload = await fetchBaiduJson("/place/v3/detail", { uids: uids.join(","), scope: "2", output: "json" }, serverAk, fetchImpl);
+  if (!isObject(payload) || providerStatus(payload) !== 0) throw new BaiduProviderError("Batch detail failed", isObject(payload) ? providerStatus(payload) : undefined);
+  if (!Array.isArray(payload.results)) throw new BaiduProviderError("Invalid batch results");
+  return payload.results.flatMap(item => {
+    try { const detail = adaptPlaceDetail({ status: 0, results: [item] }); return uids.includes(detail.providerId) ? [detail] : []; }
+    catch { return []; }
+  });
+}
+
 export async function getPlaceDetail(
   uid: string,
   serverAk: string,
@@ -306,4 +387,26 @@ export async function getPlaceDetail(
     fetchImpl,
   );
   return adaptPlaceDetail(payload);
+}
+
+export function adaptCyclingRoute(payload: unknown) {
+  if (!isObject(payload)) throw new BaiduProviderError("Malformed cycling response");
+  const status = providerStatus(payload);
+  if (status !== 0) throw new BaiduProviderError("Cycling provider failed", status, status === 2001 ? "no_route" : "provider_error");
+  const result = isObject(payload.result) ? payload.result : undefined;
+  const route = result && Array.isArray(result.routes) ? result.routes.find(isObject) : undefined;
+  if (!route) throw new BaiduProviderError("No cycling route", status, "no_route");
+  const distanceMeters = finiteNonNegative(route.distance), durationSeconds = finiteNonNegative(route.duration);
+  if (distanceMeters === undefined || durationSeconds === undefined) throw new BaiduProviderError("Malformed cycling metrics");
+  return { source: "baidu-direction-v2-riding" as const, mode: "cycling" as const, coordinateSystem: "BD-09" as const,
+    distanceMeters, durationSeconds, durationMinutes: durationSeconds / 60 };
+}
+
+export async function getCyclingRoute(input: Parameters<typeof getWalkingRoute>[0], serverAk: string, fetchImpl: FetchLike = fetch) {
+  return adaptCyclingRoute(await fetchBaiduJson("/direction/v2/riding", {
+    origin: `${input.originLatitude.toFixed(6)},${input.originLongitude.toFixed(6)}`,
+    destination: `${input.destinationLatitude.toFixed(6)},${input.destinationLongitude.toFixed(6)}`,
+    ...(input.destinationUid ? { destination_uid: input.destinationUid } : {}),
+    coord_type: "bd09ll", ret_coordtype: "bd09ll", output: "json", riding_type: "0",
+  }, serverAk, fetchImpl));
 }

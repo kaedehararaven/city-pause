@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createBaiduDiscoverySearch } from "./localSearchDiscovery";
+import { createBaiduDiscoverySearch, createCompositeBaiduDiscoverySearch } from "./localSearchDiscovery";
 import { DISCOVERY_LIMITS } from "./searchMapping";
 
 const center = { latitude: 39.9, longitude: 116.4, coordinateSystem: "BD-09" as const };
@@ -16,7 +16,7 @@ function fixture(status = 0, pois = [raw], neverCompletes = false) {
     Point: class { constructor(public lng: number, public lat: number) {} },
     LocalSearch: class {
       constructor(_point: unknown, options: BMap.LocalSearchOptions) {
-        expect(options.pageCapacity).toBe(5);
+        expect(options.pageCapacity).toBe(20);
         expect(options.renderOptions).toBeUndefined();
         callback = options.onSearchComplete;
       }
@@ -33,6 +33,11 @@ function fixture(status = 0, pois = [raw], neverCompletes = false) {
 afterEach(() => vi.useRealTimers());
 
 describe("Baidu discovery adapter", () => {
+  it("does not clear SDK results during its completion callback", async () => {
+    const { search, clear } = fixture();
+    await search("书店", new AbortController().signal);
+    expect(clear).not.toHaveBeenCalled();
+  });
   it("adapts the first page and enforces the radius", async () => {
     const { search, calls } = fixture();
     const result = await search("书店", new AbortController().signal);
@@ -41,10 +46,30 @@ describe("Baidu discovery adapter", () => {
     expect(result).toMatchObject({ status: "success", pois: [{ source: "real", providerId: "example", name: "示例书店" }] });
     expect(JSON.stringify(result)).not.toMatch(/internal|not exposed|"uid"|"title"/);
   });
-  it("truncates a provider page to five without issuing another query", async () => {
+  it("reads the full configured page without issuing another query", async () => {
     const { search, calls } = fixture(0, Array.from({ length: 20 }, () => raw));
-    expect(await search("书店", new AbortController().signal)).toMatchObject({ inspectedCount: 5, totalReported: 20 });
+    expect(await search("书店", new AbortController().signal)).toMatchObject({ inspectedCount: 20, adapterInputCount: 20, totalReported: 20 });
     expect(calls).toHaveBeenCalledTimes(1);
+  });
+  it("expands every result set returned for a keyword array", async () => {
+    const calls = vi.fn();
+    let callback: BMap.LocalSearchOptions["onSearchComplete"];
+    const makeResult = (prefix: string) => ({
+      getNumPois: () => 2, getCurrentNumPois: () => 2,
+      getPoi: (index: number) => ({ uid: `${prefix}-${index}`, title: `${prefix}${index}`, point: { lat: 39.9, lng: 116.4 } }),
+    }) as unknown as BMap.LocalResult;
+    const api = {
+      Point: class { constructor(public lng: number, public lat: number) {} },
+      LocalSearch: class {
+        constructor(_point: unknown, options: BMap.LocalSearchOptions) { expect(options.pageCapacity).toBe(20); callback = options.onSearchComplete; }
+        getStatus() { return 0; }
+        clearResults() {}
+        searchNearby(...args: unknown[]) { calls(...args); queueMicrotask(() => callback?.([makeResult("a"), makeResult("b")])); }
+      },
+    } as unknown as typeof BMap;
+    const result = await createCompositeBaiduDiscoverySearch(api, center)(["咖啡厅", "书咖"], new AbortController().signal);
+    expect(calls.mock.calls[0][0]).toEqual(["咖啡厅", "书咖"]);
+    expect(result).toMatchObject({ rawResultCount: 4, rawResultSetCount: 2, adapterInputCount: 4, inspectedCount: 4, pois: [{ providerId: "a-0" }, { providerId: "a-1" }, { providerId: "b-0" }, { providerId: "b-1" }] });
   });
   it.each([0, 2])("accepts explicit zero counts with status %s", async status => {
     expect(await fixture(status, []).search("公园", new AbortController().signal)).toMatchObject({ status: "empty" });

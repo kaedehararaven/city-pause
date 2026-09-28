@@ -41,7 +41,8 @@ describe("A1 hard constraints and unknown facts", () => {
     expect(buildRecommendations(intent(15), minimum25)).toEqual([]);
   });
   it("accepts an exact fit including separate outbound, return and buffer", () => {
-    const [plan] = buildRecommendations(intent(25), minimum25);
+    const exactFit = data([place("a", { minimumStayMinutes: 14, suggestedStayMinutes: 14 })], { "o:a": 4, "a:o": 4 });
+    const [plan] = buildRecommendations(intent(25), exactFit);
     expect(plan.totalMinutes).toBe(25);
     expect(plan.routes.map((item) => `${item.from.id}:${item.to.id}`)).toEqual(["o:a", "a:o"]);
     expect(plan.steps.reduce((n, s) => n + s.minutes, 0)).toBe(25);
@@ -51,8 +52,8 @@ describe("A1 hard constraints and unknown facts", () => {
     const [plan] = buildRecommendations(intent(), unknown);
     expect(plan.costStatus).toBe("unknown");
     expect(plan.places[0].kind).toBeUndefined();
-    expect(buildRecommendations(intent(30, { avoidCost: true }), unknown)).toEqual([]);
-    expect(buildRecommendations(intent(30, { excludedKinds: ["cafe"] }), unknown)).toEqual([]);
+    expect(buildRecommendations(intent(30, { avoidCost: true }), unknown)[0].decisionTrace?.evidence.lowCost?.state).toBe("UNKNOWN");
+    expect(buildRecommendations(intent(30, { excludedKinds: ["cafe"] }), unknown)).toHaveLength(1);
   });
   it("does not guess a missing reverse route from the outbound route", () => {
     const missing = data([place("a")], { "o:a": 2 });
@@ -66,8 +67,8 @@ describe("A1 hard constraints and unknown facts", () => {
   it("uses derived route minutes without allocating beyond the budget", () => {
     const fractional = data([place("a")], { "o:a": 2.2, "a:o": 2.2 });
     const [plan] = buildRecommendations(intent(15), fractional);
-    expect(plan.walkingMinutes).toBe(6);
-    expect(plan.stayMinutes).toBe(6);
+    expect(plan.walkingMinutes).toBeCloseTo(4.4);
+    expect(plan.stayMinutes).toBeCloseTo(7.6);
     expect(plan.totalMinutes).toBe(15);
   });
   it("uses stable category semantics rather than matching provider IDs", () => {
@@ -75,7 +76,7 @@ describe("A1 hard constraints and unknown facts", () => {
     expect(buildRecommendations(intent(30, { excludedKinds: ["cafe"] }), cafes)).toEqual([]);
   });
   it("preserves Mock source and rejects unlabelled runtime data", () => {
-    expect(buildRecommendations(intent(), minimum25)[0].source).toBe("mock");
+    expect(buildRecommendations(intent(45), minimum25)[0].source).toBe("mock");
     expect(buildRecommendations(intent(), { ...minimum25, source: undefined } as unknown as CandidateData)).toEqual([]);
   });
 });
@@ -92,7 +93,7 @@ describe("real Candidate Provider integration", () => {
     });
     const [plan] = buildRecommendations(intent(30), realData);
     expect(plan.source).toBe("real");
-    expect(plan.walkingMinutes).toBe(11);
+    expect(plan.walkingMinutes).toBeCloseTo(9.2);
     expect(plan.routes).toHaveLength(2);
     expect(plan.costStatus).toBe("unknown");
   });
@@ -113,31 +114,31 @@ describe("real Candidate Provider integration", () => {
 });
 
 describe("deterministic strategy selection", () => {
-  it("selects three strategies by rules and never repeats the same place combination", () => {
+  it("selects deterministic feasible strategies without forcing three different plans", () => {
     const input = intent(45);
     const result = buildRecommendations(input, createMockCandidateData());
-    expect(result.map(p => p.strategyId)).toEqual(["easy", "balanced", "explore"]);
-    expect(result[0].places).toHaveLength(1);
-    expect(result[1].places).toHaveLength(2);
-    expect(result[2].places).toHaveLength(2);
-    expect(new Set(result.map(p => p.places.map(s => s.providerId).sort().join("|"))).size).toBe(3);
+    expect(result.length).toBeGreaterThan(0);
+    expect(result.length).toBeLessThanOrEqual(createMockCandidateData().places.length);
+    const identities = result.flatMap(p => p.places.map(s => s.providerId));
+    expect(new Set(identities).size).toBe(identities.length);
+    expect(result.every(p => p.decisionTrace?.pareto.dominated === false)).toBe(true);
     expect(buildRecommendations(input, createMockCandidateData())).toEqual(result);
   });
   it("keeps all rest recommendations to one stop", () => {
-    expect(buildRecommendations(intent(45, { activity: "rest" }), createMockCandidateData()).every(p => p.places.length === 1)).toBe(true);
+    expect(buildRecommendations(intent(45, { activity: "rest", goal: "rest" }), createMockCandidateData()).every(p => p.places.length === 1)).toBe(true);
   });
   it("passes 84 combinations of time, activity, return and consumption", () => {
     for (const activity of ["rest", "walk", "explore"] as const)
       for (const minutes of [5, 10, 15, 30, 45, 60, 180])
         for (const back of [true, false]) for (const free of [true, false]) {
           const plans = buildRecommendations(intent(minutes, { activity, returnMode: back ? "return_to_start" : "open_ended", avoidCost: free }), createMockCandidateData());
-          expect(plans.length).toBeLessThanOrEqual(3);
+          expect(plans.length).toBeLessThanOrEqual(createMockCandidateData().places.length);
           for (const p of plans) {
             expect(p.totalMinutes).toBeLessThanOrEqual(minutes);
             expect(p.steps.reduce((n, s) => n + s.minutes, 0)).toBe(p.totalMinutes);
             expect(p.steps.some(s => s.kind === "返程")).toBe(back);
             expect(p.source).toBe("mock");
-            if (free) expect(p.costStatus).toBe("not-required");
+            expect(p.decisionTrace?.activeDimensions).toEqual(["needMatch", "mobilityBurden", "rating", "price"]);
           }
         }
   });
@@ -175,9 +176,10 @@ describe("time semantics contract", () => {
       expect(plan).not.toHaveProperty("returnWalkingMinutes");
       expect(plan.steps.some(step => step.kind === "返程")).toBe(false);
       expect(buildRecommendations(intent(30), candidate)).toEqual([]);
-      expect(buildRecommendations(intent(31), candidate)[0]).toMatchObject({
+      expect(buildRecommendations(intent(31), candidate)).toEqual([]);
+      expect(buildRecommendations(intent(39), candidate)[0]).toMatchObject({
         returnMode: "return_to_start", returnWalkingMinutes: 7,
-        totalMinutes: 31, remainingMinutes: 0, source,
+        totalMinutes: 32, remainingMinutes: 7, source,
       });
       candidate.routes = [route("o", "a", 6, source)];
       expect(buildRecommendations(intent(30, { returnMode: "open_ended" }), candidate)).toHaveLength(1);

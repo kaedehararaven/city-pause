@@ -74,7 +74,16 @@ describe("Baidu MapPOI adapter", () => {
       classifiedTag: "生态公园",
       shopHours: "00:00-24:00",
       overallRating: "4.0",
-      price: undefined,
+      telephone: "010-00000000",
+      description: "地点简介",
+      suggestedTime: "1小时",
+      indoorFloor: "2层",
+      brand: "品牌",
+      price: "80",
+      bestTime: "春秋",
+      detailUrl: "https://map.baidu.com/detail?uid=example",
+      navigationLocation: { latitude: 30, longitude: 120, coordinateSystem: "BD-09" },
+      subPlaces: [{ providerId: "gate", name: "北门", categories: ["出入口"] }],
       observedFields: [],
       observedDetailFields: [],
     });
@@ -82,7 +91,16 @@ describe("Baidu MapPOI adapter", () => {
     expect(merged.categories).toEqual(["旅游景点", "公园", "生态公园"]);
     expect(merged.openingHours).toBe("00:00-24:00");
     expect(merged.rating).toBe(4);
-    expect(merged).not.toHaveProperty("price");
+    expect(merged.telephone).toBe("010-00000000");
+    expect(merged.description).toBe("地点简介");
+    expect(merged.suggestedVisitDuration).toBe("1小时");
+    expect(merged.indoorFloor).toBe("2层");
+    expect(merged.priceText).toBe("80");
+    expect(merged.brand).toBe("品牌");
+    expect(merged.bestVisitTime).toBe("春秋");
+    expect(merged.location).toEqual(base.location);
+    expect(merged.navigationLocation?.latitude).toBe(30);
+    expect(merged.subPlaces?.[0].name).toBe("北门");
   });
 
   it("ignores malformed optional fields and mismatched detail identity", () => {
