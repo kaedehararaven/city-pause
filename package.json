@@ -8,21 +8,23 @@
     "dev:client": "vite --host 127.0.0.1 --port 5173",
     "dev:server": "tsx watch server/index.ts",
     "start:server": "node server-dist/index.js",
-    "build": "vite build && tsc -p tsconfig.server.json && node scripts/verify-client-bundle.mjs",
+    "build": "vite build && tsc -p tsconfig.server.json && tsc -p tsconfig.makers.json && node scripts/verify-client-bundle.mjs",
     "build:client": "vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "verify:bundle": "node scripts/verify-client-bundle.mjs",
     "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.server.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.makers.json"
   },
   "dependencies": {
     "@baidumap/jsapi-loader": "^1.0.0",
     "dotenv": "^17.2.2",
+    "express": "^5.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@baidumap/jsapi-v4-types": "^4.0.4",
+    "@types/express": "^5.0.6",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",

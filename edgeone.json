@@ -1,0 +1,11 @@
+{
+  "installCommand": "npx --yes pnpm@11.19.0 install --frozen-lockfile",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "nodeVersion": "24.18.0",
+  "cloudFunctions": {
+    "nodejs": {
+      "maxDuration": 30
+    }
+  }
+}

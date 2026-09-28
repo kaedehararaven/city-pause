@@ -1,5 +1,9 @@
 # 城市暂停键
 
+## EdgeOne Makers 部署
+
+部署入口、环境变量、域名限制与验收步骤见 [Makers 部署说明](docs/EDGEONE_MAKERS_DEPLOYMENT.md)。前端仍使用 Vite，`/api/*` 由 Node 云函数承载；本地开发命令保持不变。
+
 B2 多类别候选发现已在底部地图开发面板接入当前表单的 A2 SearchPolicy。可定位搜索，也可使用明确标注的公开测试区域；发现池最多 10 个 REAL 候选，搜索串行。Planner 的 REAL 模式已接通五类候选：每次最多对 6 个候选串行查真实路线，默认只查去程，停留和缓冲按预算调整。旧单公园入口仅保留为独立诊断。见 [计划联调记录](docs/REAL_PLAN_INTEGRATION.md)及 [B2 历史验证](docs/PHASE_B2_VALIDATION.md)。
 
 当前主页面包含用户需求输入、时间约束和三方案推荐 Prototype。推荐支持明确选择 MOCK 或 REAL 数据源：MOCK 用于稳定演示；REAL 需要先在页面底部完成定位和五类别候选发现，点击生成时才查询当前模式所需路线（默认无需返回起点；勾选返程后另查返程）。两种来源通过同一内部 Contract 进入推荐核心，真实失败不会静默伪装成 Mock 成功。AI 和 Citywalk 尚未实现。

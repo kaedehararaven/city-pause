@@ -1,4 +1,4 @@
-import { createServer, type Server, type ServerResponse } from "node:http";
+import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { createPlaceDetailCache, PlaceDetailBusyError } from "./placeDetailCache.js";
 
 import {
@@ -42,7 +42,7 @@ function validUid(value: string | null): value is string {
   return value !== null && /^[A-Za-z0-9_-]{1,128}$/.test(value);
 }
 
-export function createAppServer(options: AppServerOptions = {}): Server {
+export function createAppHandler(options: AppServerOptions = {}) {
   const fetchImpl = options.fetchImpl ?? fetch;
   const placeDetail = createPlaceDetailCache(uid => getPlaceDetail(uid, options.serverAk!, fetchImpl), undefined, undefined,
     async uids => new Map((await getPlaceDetails(uids, options.serverAk!, fetchImpl)).map(detail => [detail.providerId, detail])));
@@ -52,7 +52,7 @@ export function createAppServer(options: AppServerOptions = {}): Server {
   let queue: Promise<unknown> = Promise.resolve();
   let lastRouteStarted = 0;
 
-  return createServer(async (request, response) => {
+  return async (request: IncomingMessage, response: ServerResponse) => {
     const url = new URL(
       request.url ?? "/",
       `http://${request.headers.host ?? "localhost"}`,
@@ -196,5 +196,9 @@ export function createAppServer(options: AppServerOptions = {}): Server {
     }
 
     sendJson(response, 404, { ok: false, error: "Not found" });
-  });
+  };
+}
+
+export function createAppServer(options: AppServerOptions = {}): Server {
+  return createServer(createAppHandler(options));
 }
