@@ -1,5 +1,9 @@
 # 城市暂停键
 
+## Vercel 部署
+
+Vite 前端与 `/api/*` Node Function 可部署在同一个项目，见 [Vercel 部署说明](docs/VERCEL_DEPLOYMENT.md)。Makers 入口同时保留。
+
 ## EdgeOne Makers 部署
 
 部署入口、环境变量、域名限制与验收步骤见 [Makers 部署说明](docs/EDGEONE_MAKERS_DEPLOYMENT.md)。前端仍使用 Vite，`/api/*` 由 Node 云函数承载；本地开发命令保持不变。
