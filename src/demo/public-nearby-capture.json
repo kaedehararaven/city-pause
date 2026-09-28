@@ -1,0 +1,2042 @@
+{
+  "origin": {
+    "id": "public-demo-origin",
+    "name": "公开测试起点",
+    "location": {
+      "latitude": 39.915,
+      "longitude": 116.404,
+      "coordinateSystem": "BD-09"
+    }
+  },
+  "capturedAt": "2026-09-28T12:14:26.154Z",
+  "pools": {
+    "rest": [
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "b6e94c717b21a237970319b4",
+          "name": "书香国博",
+          "location": {
+            "latitude": 39.911976284990324,
+            "longitude": 116.40691886185944,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "休闲娱乐;书咖",
+          "parentProviderId": "db1f39d42752aa6ff5c59cd1",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区广场东侧路中国国家博物馆",
+          "categories": [
+            "休闲娱乐",
+            "其他",
+            "书咖"
+          ],
+          "openingHours": "10:00-21:00",
+          "priceText": "50.0",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=b6e94c717b21a237970319b4&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91377039298125,
+            "longitude": 116.40794719848435,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 3.7
+        },
+        "classifiedPoiTag": "休闲娱乐;书咖",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "92c30574a979d07136b06c10",
+          "name": "熙晟读书会",
+          "location": {
+            "latitude": 39.910853845148864,
+            "longitude": 116.39053781173224,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "休闲娱乐;书咖",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市西城区西长安街街道北新华街76号",
+          "categories": [
+            "休闲娱乐",
+            "其他",
+            "书咖"
+          ],
+          "priceText": "35.0",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=92c30574a979d07136b06c10&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91085728582023,
+            "longitude": 116.3904253121722,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4
+        },
+        "classifiedPoiTag": "休闲娱乐;书咖",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "1872f99cefcf87fae50738d2",
+          "name": "GEONE书店",
+          "location": {
+            "latitude": 39.90452376753097,
+            "longitude": 116.40364911963367,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "8d47b68d26c02251d13ce39d",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市西城区廊房头条北京坊",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=1872f99cefcf87fae50738d2&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904751099432815,
+            "longitude": 116.40400081320269,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "109bc20e7e585dda6240a982",
+          "name": "东城区图书馆王府井书店分馆",
+          "location": {
+            "latitude": 39.91664204620119,
+            "longitude": 116.41852101650412,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "c540cad5d00dc47407026f1b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区新华书店王府井书店六层",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "10:00-17:00",
+          "telephone": "(010)65599059",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=109bc20e7e585dda6240a982&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91679708144824,
+            "longitude": 116.4198156754434,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.3
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "b26c882b59068cba84154182",
+          "name": "故宫书店",
+          "location": {
+            "latitude": 39.92830632701349,
+            "longitude": 116.40386498244773,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "06d2dffda107b0ef89f15db6",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区景山前街4号故宫博物院摛藻堂内",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "09:00-17:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=b26c882b59068cba84154182&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92838058807442,
+            "longitude": 116.40321256124768,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "67e477c8e935983ff3193701",
+          "name": "新世纪教育书店(骑河楼街店)",
+          "location": {
+            "latitude": 39.92630791771102,
+            "longitude": 116.41204683886315,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区骑河楼街北京市第六十五中学南侧",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "08:30-16:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=67e477c8e935983ff3193701&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.9262303552271,
+            "longitude": 116.41205016395895,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.9
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "0a4f06c50d0cddbdf7eafc27",
+          "name": "中轴书店",
+          "location": {
+            "latitude": 39.912528470162584,
+            "longitude": 116.38807358005727,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "大六部口街4号",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "09:00-17:00",
+          "telephone": "13810867899",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=0a4f06c50d0cddbdf7eafc27&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91253762336536,
+            "longitude": 116.38798571411839,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.8
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "38727728c6c88ec5c7f50daa",
+          "name": "瑭所(王府中環店)",
+          "location": {
+            "latitude": 39.91893084786995,
+            "longitude": 116.41634055953973,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店",
+          "parentProviderId": "1217cdb42ecb9e01c51b75e9",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "王府井大街269号王府中环东区B1层129",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "15321318218",
+          "brand": "瑭所",
+          "priceText": "63.9",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=38727728c6c88ec5c7f50daa&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91934643670926,
+            "longitude": 116.41603811781606,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "美食;甜品店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "a1a50957d9da7c854e2fdfa3",
+          "name": "左庭上院酒店·院里花开下午茶",
+          "location": {
+            "latitude": 39.90192679640218,
+            "longitude": 116.40635364803256,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "南晓顺胡同5号楼",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店"
+          ],
+          "openingHours": "08:00-21:30",
+          "telephone": "(010)67021216",
+          "priceText": "193.5",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=a1a50957d9da7c854e2fdfa3&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90129264447941,
+            "longitude": 116.40725322526465,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "美食;甜品店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "43885dba1eba6947d12dd635",
+          "name": "Laderach莱德拉(北京apm店)",
+          "location": {
+            "latitude": 39.9205075361269,
+            "longitude": 116.41845049952158,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店",
+          "parentProviderId": "5bb8ca59fda4ed69715e80b5",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区王府井大街138号北京apm商场1层L120商铺",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店"
+          ],
+          "openingHours": "10:00-22:00",
+          "brand": "Laderach莱德拉",
+          "priceText": "177.6",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=43885dba1eba6947d12dd635&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92049613234893,
+            "longitude": 116.41866896956856,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "美食;甜品店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "ed6cf89d206f903802294fe5",
+          "name": "酥园The Patisserie·北京东方君悦大酒店",
+          "location": {
+            "latitude": 39.916096327722265,
+            "longitude": 116.42093143967904,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店",
+          "parentProviderId": "669775d035a11b42fd0eb03d",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "东长安街东方君悦大酒店一层（大堂层）",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店"
+          ],
+          "openingHours": "08:00-21:00",
+          "priceText": "48.0",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=ed6cf89d206f903802294fe5&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91585596793778,
+            "longitude": 116.42092913990015,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.3
+        },
+        "classifiedPoiTag": "美食;甜品店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "be03e72f044140029b005040",
+          "name": "炸酱面冰淇淋",
+          "location": {
+            "latitude": 39.901941810480714,
+            "longitude": 116.40420840464418,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "大栅栏街18号大栅栏购物中心大栅栏食品商场F1",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店",
+            "冰淇淋店"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=be03e72f044140029b005040&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.901912300153995,
+            "longitude": 116.40411551220087,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4
+        },
+        "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "fa5131c1020942fc01897290",
+          "name": "北平制冰厂(喜悦商场店)",
+          "location": {
+            "latitude": 39.91622098075131,
+            "longitude": 116.41702803274652,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+          "parentProviderId": "dcc6c49feba335db157643b8",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "霞公府街1号3幢地下一层-102内P005号",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店",
+            "冰淇淋店"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "18513950920",
+          "brand": "北平制冰厂",
+          "priceText": "15.3",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=fa5131c1020942fc01897290&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.915747310337416,
+            "longitude": 116.41692126035124,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.1
+        },
+        "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "7444c2346186b05140afe6df",
+          "name": "DQ·蛋糕·冰淇淋(东长安街店)",
+          "location": {
+            "latitude": 39.91623384725518,
+            "longitude": 116.41673033430052,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+          "parentProviderId": "dcc6c49feba335db157643b8",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "东长安街1号东方新天地LG层BB18号商户",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店",
+            "冰淇淋店"
+          ],
+          "openingHours": "10:00-21:00",
+          "telephone": "13581677132",
+          "indoorFloor": "F4",
+          "brand": "dq",
+          "priceText": "25.3",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=7444c2346186b05140afe6df&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.915747310337416,
+            "longitude": 116.41692126035124,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "71437de27f38dac508f5ebf1",
+          "name": "簪花茉白",
+          "location": {
+            "latitude": 39.91760951148864,
+            "longitude": 116.41748446177614,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+          "parentProviderId": "2ad32cc3af99c5969d95de4b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "北京市东城区王府井小吃街好友世界商场",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店",
+            "冰淇淋店"
+          ],
+          "openingHours": "09:30-21:00",
+          "priceText": "30.0",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=71437de27f38dac508f5ebf1&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91703607866335,
+            "longitude": 116.41867708380053,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.7
+        },
+        "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "1ea0c8eb78a592667adbd2d1",
+          "name": "iGELATO意大利手工冰淇淋(北京apm店)",
+          "location": {
+            "latitude": 39.921254088086876,
+            "longitude": 116.41858596399248,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+          "parentProviderId": "5bb8ca59fda4ed69715e80b5",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597929533,
+          "address": "王府井大街138号北京apm6层（外婆家隔壁）",
+          "categories": [
+            "美食",
+            "其他",
+            "甜品店",
+            "冰淇淋店"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "18102132180",
+          "brand": "iGELATO意大利手工冰淇淋",
+          "priceText": "39.6",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=1ea0c8eb78a592667adbd2d1&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92129319727825,
+            "longitude": 116.41916543841933,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "美食;甜品店;冰淇淋店",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      }
+    ],
+    "walk": [
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "9ee392b869507140bbbd631d",
+          "name": "菖蒲河公园",
+          "location": {
+            "latitude": 39.91479243779711,
+            "longitude": 116.40996025482457,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "旅游景点;公园;城市公园",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市东城区南池子大街天安门东侧",
+          "categories": [
+            "旅游景点",
+            "公园",
+            "城市公园"
+          ],
+          "openingHours": "00:00-24:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=9ee392b869507140bbbd631d&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91563119641463,
+            "longitude": 116.40974575114677,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "旅游景点;公园;城市公园",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "a0284307c6d5ceb9430245bc",
+          "name": "前门公园",
+          "location": {
+            "latitude": 39.90581823773093,
+            "longitude": 116.40404024185271,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "旅游景点;公园",
+          "parentProviderId": "c9b5fb91d49345bc5d0d0262",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市东城区前门大街天安门",
+          "categories": [
+            "旅游景点",
+            "公园"
+          ],
+          "openingHours": "00:00-24:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=a0284307c6d5ceb9430245bc&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90616387692589,
+            "longitude": 116.40243102991147,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "旅游景点;公园",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "2cf20108be26bce0e5e965f3",
+          "name": "月亮湾公园",
+          "location": {
+            "latitude": 39.90507075511382,
+            "longitude": 116.40347044666774,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "旅游景点;公园;城市公园",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市西城区前门西河沿街7号附近",
+          "categories": [
+            "旅游景点",
+            "公园",
+            "城市公园"
+          ],
+          "openingHours": "00:00-24:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=2cf20108be26bce0e5e965f3&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.9050580914601,
+            "longitude": 116.40381155555683,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 3.8
+        },
+        "classifiedPoiTag": "旅游景点;公园;城市公园",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "00d79dbf1e0f361f8f55ecf8",
+          "name": "蕙芳园",
+          "location": {
+            "latitude": 39.917838405700714,
+            "longitude": 116.40035440451472,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "旅游景点;公园",
+          "parentProviderId": "e2c734e489d8d15d15a190d1",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市东城区中华路4号中山公园内",
+          "categories": [
+            "旅游景点",
+            "公园"
+          ],
+          "openingHours": "08:00-18:00",
+          "telephone": "(010)66055431",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=00d79dbf1e0f361f8f55ecf8&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91787493125206,
+            "longitude": 116.39819893928998,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 3
+        },
+        "classifiedPoiTag": "旅游景点;公园",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "4577566104531adfcb213d76",
+          "name": "王府井商业街",
+          "location": {
+            "latitude": 39.92111159849176,
+            "longitude": 116.41757833470194,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市东城区王府井大街255号王府井百货东侧",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=4577566104531adfcb213d76&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92166882794514,
+            "longitude": 116.4176007923397,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "382c3c094a10054d14c8f609",
+          "name": "廊房二条",
+          "location": {
+            "latitude": 39.903405840183716,
+            "longitude": 116.40243676651741,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市西城区廊房二条32号",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "00:00-24:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=382c3c094a10054d14c8f609&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90398557178093,
+            "longitude": 116.40126391096018,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.3
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "eae97ad26df13e95acee7a7a",
+          "name": "淘汇新天(王府井步行街店)",
+          "location": {
+            "latitude": 39.922182960748664,
+            "longitude": 116.41696030051108,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;购物中心",
+          "parentProviderId": "f42c1622354058d4ebe582a1",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市东城区王府井大街219号(金鱼胡同地铁站出入口步行70米)",
+          "categories": [
+            "购物",
+            "购物中心"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "15701373414",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=eae97ad26df13e95acee7a7a&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92257286800599,
+            "longitude": 116.41710136989632,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "购物;购物中心",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "6935c938c228260d35b06c18",
+          "name": "东安市场",
+          "location": {
+            "latitude": 39.91967631041711,
+            "longitude": 116.41795930606872,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街;步行街",
+          "parentProviderId": "c16534055f70e77aab175afa",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "王府井大街138号（金鱼胡同地铁站B东口步行290米）",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街",
+            "步行街"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "(010)65281270",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=6935c938c228260d35b06c18&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92129104849712,
+            "longitude": 116.41919555017698,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街;步行街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "8d47b68d26c02251d13ce39d",
+          "name": "北京坊",
+          "location": {
+            "latitude": 39.904342290662996,
+            "longitude": 116.40253800554838,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街;步行街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "煤市街与廊房头条交叉口东北角",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街",
+            "步行街"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "(010)63025088",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=8d47b68d26c02251d13ce39d&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904712941567325,
+            "longitude": 116.4030815658467,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.7
+        },
+        "classifiedPoiTag": "购物;商业街;步行街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "a3ad9f495a4760fbf7231089",
+          "name": "大栅栏五百年历史长廊",
+          "location": {
+            "latitude": 39.902413541452916,
+            "longitude": 116.40336570424527,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "4be1a21aaaa155f53a13fd2b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市西城区大栅栏街18号大栅栏购物中心1层",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "09:00-21:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=a3ad9f495a4760fbf7231089&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.902355274842954,
+            "longitude": 116.40337172363778,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "c14ebe7348d541b6deee8b68",
+          "name": "广德楼茶馆(大栅栏商业街店)",
+          "location": {
+            "latitude": 39.90228187501193,
+            "longitude": 116.401415303322,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "休闲娱乐;茶馆",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "大栅栏街道前门大街大栅栏街39号(麦当劳旁)",
+          "categories": [
+            "美食",
+            "茶座",
+            "休闲娱乐",
+            "茶馆"
+          ],
+          "openingHours": "09:00-22:00",
+          "telephone": "15001127925",
+          "priceText": "126.9",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=c14ebe7348d541b6deee8b68&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.902131720008136,
+            "longitude": 116.40137554541607,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.6
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "goalMatch": "W",
+        "sourceLayer": "W-natural",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "90e08d1574b20a784251c065",
+          "name": "大栅栏",
+          "location": {
+            "latitude": 39.90246418764606,
+            "longitude": 116.40335995509001,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "4be1a21aaaa155f53a13fd2b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市西城区前门大街大栅栏街6号",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "09:30-20:00",
+          "telephone": "(010)63035313",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=90e08d1574b20a784251c065&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90235527771429,
+            "longitude": 116.40337272265232,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "11f357890b1d4a7bd3ff2340",
+          "name": "北京坊-西区",
+          "location": {
+            "latitude": 39.90446004658144,
+            "longitude": 116.40190595779156,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "8d47b68d26c02251d13ce39d",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597930878,
+          "address": "北京市西城区煤市街北京坊",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=11f357890b1d4a7bd3ff2340&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904572677629545,
+            "longitude": 116.40250251978581,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.8
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      }
+    ],
+    "discover": [
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "1872f99cefcf87fae50738d2",
+          "name": "GEONE书店",
+          "location": {
+            "latitude": 39.90452376753097,
+            "longitude": 116.40364911963367,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "8d47b68d26c02251d13ce39d",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市西城区廊房头条北京坊",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=1872f99cefcf87fae50738d2&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904751099432815,
+            "longitude": 116.40400081320269,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "109bc20e7e585dda6240a982",
+          "name": "东城区图书馆王府井书店分馆",
+          "location": {
+            "latitude": 39.91664204620119,
+            "longitude": 116.41852101650412,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "c540cad5d00dc47407026f1b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市东城区新华书店王府井书店六层",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "10:00-17:00",
+          "telephone": "(010)65599059",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=109bc20e7e585dda6240a982&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91679708144824,
+            "longitude": 116.4198156754434,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.3
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "b26c882b59068cba84154182",
+          "name": "故宫书店",
+          "location": {
+            "latitude": 39.92830632701349,
+            "longitude": 116.40386498244773,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "parentProviderId": "06d2dffda107b0ef89f15db6",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市东城区景山前街4号故宫博物院摛藻堂内",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "09:00-17:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=b26c882b59068cba84154182&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92838058807442,
+            "longitude": 116.40321256124768,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "67e477c8e935983ff3193701",
+          "name": "新世纪教育书店(骑河楼街店)",
+          "location": {
+            "latitude": 39.92630791771102,
+            "longitude": 116.41204683886315,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市东城区骑河楼街北京市第六十五中学南侧",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "08:30-16:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=67e477c8e935983ff3193701&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.9262303552271,
+            "longitude": 116.41205016395895,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.9
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "0a4f06c50d0cddbdf7eafc27",
+          "name": "中轴书店",
+          "location": {
+            "latitude": 39.912528470162584,
+            "longitude": 116.38807358005727,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商铺;书店",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "大六部口街4号",
+          "categories": [
+            "购物",
+            "商铺",
+            "书店"
+          ],
+          "openingHours": "09:00-17:00",
+          "telephone": "13810867899",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=0a4f06c50d0cddbdf7eafc27&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.91253762336536,
+            "longitude": 116.38798571411839,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.8
+        },
+        "classifiedPoiTag": "购物;商铺;书店",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "4577566104531adfcb213d76",
+          "name": "王府井商业街",
+          "location": {
+            "latitude": 39.92111159849176,
+            "longitude": 116.41757833470194,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市东城区王府井大街255号王府井百货东侧",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=4577566104531adfcb213d76&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92166882794514,
+            "longitude": 116.4176007923397,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "382c3c094a10054d14c8f609",
+          "name": "廊房二条",
+          "location": {
+            "latitude": 39.903405840183716,
+            "longitude": 116.40243676651741,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市西城区廊房二条32号",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "00:00-24:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=382c3c094a10054d14c8f609&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90398557178093,
+            "longitude": 116.40126391096018,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.3
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "eae97ad26df13e95acee7a7a",
+          "name": "淘汇新天(王府井步行街店)",
+          "location": {
+            "latitude": 39.922182960748664,
+            "longitude": 116.41696030051108,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;购物中心",
+          "parentProviderId": "f42c1622354058d4ebe582a1",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市东城区王府井大街219号(金鱼胡同地铁站出入口步行70米)",
+          "categories": [
+            "购物",
+            "购物中心"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "15701373414",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=eae97ad26df13e95acee7a7a&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92257286800599,
+            "longitude": 116.41710136989632,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.4
+        },
+        "classifiedPoiTag": "购物;购物中心",
+        "goalMatch": "M",
+        "sourceLayer": "M",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "6935c938c228260d35b06c18",
+          "name": "东安市场",
+          "location": {
+            "latitude": 39.91967631041711,
+            "longitude": 116.41795930606872,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街;步行街",
+          "parentProviderId": "c16534055f70e77aab175afa",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "王府井大街138号（金鱼胡同地铁站B东口步行290米）",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街",
+            "步行街"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "(010)65281270",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=6935c938c228260d35b06c18&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.92129104849712,
+            "longitude": 116.41919555017698,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街;步行街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "8d47b68d26c02251d13ce39d",
+          "name": "北京坊",
+          "location": {
+            "latitude": 39.904342290662996,
+            "longitude": 116.40253800554838,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街;步行街",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "煤市街与廊房头条交叉口东北角",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街",
+            "步行街"
+          ],
+          "openingHours": "10:00-22:00",
+          "telephone": "(010)63025088",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=8d47b68d26c02251d13ce39d&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904712941567325,
+            "longitude": 116.4030815658467,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.7
+        },
+        "classifiedPoiTag": "购物;商业街;步行街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "a3ad9f495a4760fbf7231089",
+          "name": "大栅栏五百年历史长廊",
+          "location": {
+            "latitude": 39.902413541452916,
+            "longitude": 116.40336570424527,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "4be1a21aaaa155f53a13fd2b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市西城区大栅栏街18号大栅栏购物中心1层",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "09:00-21:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=a3ad9f495a4760fbf7231089&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.902355274842954,
+            "longitude": 116.40337172363778,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "c14ebe7348d541b6deee8b68",
+          "name": "广德楼茶馆(大栅栏商业街店)",
+          "location": {
+            "latitude": 39.90228187501193,
+            "longitude": 116.401415303322,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "休闲娱乐;茶馆",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "大栅栏街道前门大街大栅栏街39号(麦当劳旁)",
+          "categories": [
+            "美食",
+            "茶座",
+            "休闲娱乐",
+            "茶馆"
+          ],
+          "openingHours": "09:00-22:00",
+          "telephone": "15001127925",
+          "priceText": "126.9",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=c14ebe7348d541b6deee8b68&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.902131720008136,
+            "longitude": 116.40137554541607,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.6
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "goalMatch": "W",
+        "sourceLayer": "W-natural",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "medium"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "90e08d1574b20a784251c065",
+          "name": "大栅栏",
+          "location": {
+            "latitude": 39.90246418764606,
+            "longitude": 116.40335995509001,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "4be1a21aaaa155f53a13fd2b",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市西城区前门大街大栅栏街6号",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "09:30-20:00",
+          "telephone": "(010)63035313",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=90e08d1574b20a784251c065&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.90235527771429,
+            "longitude": 116.40337272265232,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 5
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      },
+      {
+        "poi": {
+          "source": "real",
+          "provider": "baidu",
+          "providerId": "11f357890b1d4a7bd3ff2340",
+          "name": "北京坊-西区",
+          "location": {
+            "latitude": 39.90446004658144,
+            "longitude": 116.40190595779156,
+            "coordinateSystem": "BD-09"
+          },
+          "classifiedPoiTag": "购物;商业街",
+          "parentProviderId": "8d47b68d26c02251d13ce39d",
+          "detailSource": "place-search-v3",
+          "detailExpiresAt": 1790597931603,
+          "address": "北京市西城区煤市街北京坊",
+          "categories": [
+            "购物",
+            "其他",
+            "商业街"
+          ],
+          "openingHours": "10:00-22:00",
+          "detailUrl": "https://api.map.baidu.com/place/detail?uid=11f357890b1d4a7bd3ff2340&output=html&source=placeapi_v3",
+          "navigationLocation": {
+            "latitude": 39.904572677629545,
+            "longitude": 116.40250251978581,
+            "coordinateSystem": "BD-09"
+          },
+          "rating": 4.8
+        },
+        "classifiedPoiTag": "购物;商业街",
+        "goalMatch": "S",
+        "sourceLayer": "S",
+        "tagValidation": "matched",
+        "matchedSearchCategories": [],
+        "discoveryPriority": "high"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "7444c2346186b05140afe6df",
+        "location": {
+          "latitude": 39.91623384725518,
+          "longitude": 116.41673033430052,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1524,
+      "walkingDurationSeconds": 1301,
+      "walkingMinutes": 22,
+      "distanceMeters": 1524,
+      "durationSeconds": 1301,
+      "durationMinutes": 21.683333333333334
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "fa5131c1020942fc01897290",
+        "location": {
+          "latitude": 39.91622098075131,
+          "longitude": 116.41702803274652,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1530,
+      "walkingDurationSeconds": 1306,
+      "walkingMinutes": 22,
+      "distanceMeters": 1530,
+      "durationSeconds": 1306,
+      "durationMinutes": 21.766666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "38727728c6c88ec5c7f50daa",
+        "location": {
+          "latitude": 39.91893084786995,
+          "longitude": 116.41634055953973,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1412,
+      "walkingDurationSeconds": 1264,
+      "walkingMinutes": 22,
+      "distanceMeters": 1412,
+      "durationSeconds": 1264,
+      "durationMinutes": 21.066666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "1872f99cefcf87fae50738d2",
+        "location": {
+          "latitude": 39.90452376753097,
+          "longitude": 116.40364911963367,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2826,
+      "walkingDurationSeconds": 2462,
+      "walkingMinutes": 42,
+      "distanceMeters": 2826,
+      "durationSeconds": 2462,
+      "durationMinutes": 41.03333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "11f357890b1d4a7bd3ff2340",
+        "location": {
+          "latitude": 39.90446004658144,
+          "longitude": 116.40190595779156,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2704,
+      "walkingDurationSeconds": 2356,
+      "walkingMinutes": 40,
+      "distanceMeters": 2704,
+      "durationSeconds": 2356,
+      "durationMinutes": 39.266666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "71437de27f38dac508f5ebf1",
+        "location": {
+          "latitude": 39.91760951148864,
+          "longitude": 116.41748446177614,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1621,
+      "walkingDurationSeconds": 1382,
+      "walkingMinutes": 24,
+      "distanceMeters": 1621,
+      "durationSeconds": 1382,
+      "durationMinutes": 23.033333333333335
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1639,
+      "walkingDurationSeconds": 1429,
+      "walkingMinutes": 24,
+      "distanceMeters": 1639,
+      "durationSeconds": 1429,
+      "durationMinutes": 23.816666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "382c3c094a10054d14c8f609",
+        "location": {
+          "latitude": 39.903405840183716,
+          "longitude": 116.40243676651741,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2987,
+      "walkingDurationSeconds": 2600,
+      "walkingMinutes": 44,
+      "distanceMeters": 2987,
+      "durationSeconds": 2600,
+      "durationMinutes": 43.333333333333336
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "6935c938c228260d35b06c18",
+        "location": {
+          "latitude": 39.91967631041711,
+          "longitude": 116.41795930606872,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1704,
+      "walkingDurationSeconds": 1513,
+      "walkingMinutes": 26,
+      "distanceMeters": 1704,
+      "durationSeconds": 1513,
+      "durationMinutes": 25.216666666666665
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "43885dba1eba6947d12dd635",
+        "location": {
+          "latitude": 39.9205075361269,
+          "longitude": 116.41845049952158,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1793,
+      "walkingDurationSeconds": 1590,
+      "walkingMinutes": 27,
+      "distanceMeters": 1793,
+      "durationSeconds": 1590,
+      "durationMinutes": 26.5
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "0a4f06c50d0cddbdf7eafc27",
+        "location": {
+          "latitude": 39.912528470162584,
+          "longitude": 116.38807358005727,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2234,
+      "walkingDurationSeconds": 1939,
+      "walkingMinutes": 33,
+      "distanceMeters": 2234,
+      "durationSeconds": 1939,
+      "durationMinutes": 32.31666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "public-demo-origin",
+        "name": "公开测试起点",
+        "location": {
+          "latitude": 39.915,
+          "longitude": 116.404,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "90e08d1574b20a784251c065",
+        "location": {
+          "latitude": 39.90246418764606,
+          "longitude": 116.40335995509001,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 3133,
+      "walkingDurationSeconds": 2725,
+      "walkingMinutes": 46,
+      "distanceMeters": 3133,
+      "durationSeconds": 2725,
+      "durationMinutes": 45.416666666666664
+    }
+  ],
+  "searches": [
+    {
+      "goal": "rest",
+      "keywords": [
+        "书咖",
+        "书店",
+        "甜品店",
+        "公园"
+      ],
+      "radius": 1500,
+      "raw": 20,
+      "accepted": 16
+    },
+    {
+      "goal": "walk",
+      "keywords": [
+        "公园",
+        "商业街",
+        "购物中心",
+        "美术馆"
+      ],
+      "radius": 1500,
+      "raw": 20,
+      "accepted": 13
+    },
+    {
+      "goal": "discover",
+      "keywords": [
+        "书店",
+        "商业街",
+        "美术馆",
+        "手工制作"
+      ],
+      "radius": 1500,
+      "raw": 20,
+      "accepted": 14
+    }
+  ],
+  "requests": {
+    "search": 3,
+    "routes": 12
+  }
+}

@@ -1,5 +1,9 @@
 # 城市暂停键 Contract · v0.5
 
+Multi-stop最新增量：Family不足时允许独立补搜既有Goal的S/M标签，不回写单地点供给；补充去程和站间边共用6次新增路线额度。默认排名前3个可用首站各自构造，成功后仍继续下一个，每首站最多展示1条，按首站原排名展示。跨首站仅排除相同无序POI集合，不按Family合并。120分钟起散步/探索优先选择最佳两站的合格扩展，不能降低最弱Goal或压缩原两站精确停留；90分钟默认两站，休息始终两站。replay专用历史边不得流入实时cache。见[原路线扩展](MULTI_STOP_TIME_EXPANSION.md)及[独立首站与Demo补采](MULTI_STOP_INDEPENDENT_ANCHORS.md)。
+
+2026-09-28 新增独立 Multi-stop Route Builder V1：`src/route-builder/model.ts` 定义 RouteCandidate/MultiRoute/BuildResult，不取代单地点 Recommendation。消费现有默认排序全量结果，不回写Family/dwell/路线排名到单地点；UI分别展示两类结果。最弱Goal等级优先，无站数奖励；按既定Family与dwell约束验证开放式2/3站路线。事实依旧使用canonical MapPOI/RouteResult。请求budget、缓存、精确/显示时间与状态语义见[接入记录](MULTI_STOP_ROUTE_BUILDER_V1_IMPLEMENTATION.md)。
+
 最新供给修订：Web Search V3每层同一合并查询最多3页、每页20条；候选按规范化完整classified_poi_tag路径最多5个，跨S/M去重并共享容量。12个阈值按限额后有效候选判断。分页失败保留部分结果且停止扩展，不假报完整成功。评分、Goal等级和路线规则不变。详见[当前v3供给](GOAL_CANDIDATE_SUPPLY_V3_INTEGRATION.md)。下方单页/每层一次请求描述为历史状态。
 
 当前推荐决策以“Recommendation Decision Engine v0.3”为基础，Activity 充分性、goal fallback 和收缩诊断以末尾 A v0.3.1 补充及 `docs/A_V031_COMPLETION_REPORT.md` 为准；路线、通勤门禁和候选供给以本文件 B3 补充及 `docs/B3_COMPLETION_REPORT.md` 为准。下方 A3 权重、walking 节奏、费用降级规则保留历史记录，不能覆盖最新语义。

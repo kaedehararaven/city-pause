@@ -104,7 +104,7 @@ export type GoalSupplyResult = {
 
 function addReason(reasons: Record<string, number>, reason: string) { reasons[reason] = (reasons[reason] ?? 0) + 1; }
 
-function matchingRule(tag: string | undefined, policy: GoalSupplyPolicy): { level: GoalMatch; path: string } | undefined {
+export function matchingRule(tag: string | undefined, policy: GoalSupplyPolicy): { level: GoalMatch; path: string } | undefined {
   const actual = normalizePath(tag);
   if (!actual) return undefined;
   const matches = [...policy.s, ...policy.m, ...policy.w].filter(item => pathMatches(actual, normalizePath(item.path)));
@@ -112,7 +112,7 @@ function matchingRule(tag: string | undefined, policy: GoalSupplyPolicy): { leve
   return best ? { level: best.level, path: best.path } : undefined;
 }
 
-function isNavigation(tag?: string) {
+export function isNavigation(tag?: string) {
   const actual = normalizePath(tag);
   return NAVIGATION_PREFIXES.some(prefix => pathMatches(actual, prefix));
 }

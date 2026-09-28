@@ -1,0 +1,700 @@
+{
+  "origin": {
+    "id": "4577566104531adfcb213d76",
+    "name": "王府井商业街周边（公开演示起点）",
+    "location": {
+      "latitude": 39.92111159849176,
+      "longitude": 116.41757833470194,
+      "coordinateSystem": "BD-09"
+    }
+  },
+  "capturedAt": "2026-09-28T12:47:27.103Z",
+  "candidates": [
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "8f1bceaa3551bf1b2fb96dd9",
+        "name": "星巴克(北京新东安)",
+        "location": {
+          "latitude": 39.921024582854166,
+          "longitude": 116.41852847243985,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "美食;咖啡厅",
+        "parentProviderId": "5bb8ca59fda4ed69715e80b5",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "王府井大街138号新东安广场地下一层B111-B112号店铺（北京apm）",
+        "categories": [
+          "美食",
+          "咖啡厅"
+        ],
+        "openingHours": "07:00-22:00",
+        "telephone": "(010)65255710",
+        "indoorFloor": "B1",
+        "brand": "星巴克",
+        "priceText": "26.4",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=8f1bceaa3551bf1b2fb96dd9&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.92129236260876,
+          "longitude": 116.41909827254753,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 4
+      },
+      "classifiedPoiTag": "美食;咖啡厅",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "caeacbf91b96147a06fef586",
+        "name": "%Arabica阿拉比卡咖啡(APM店)",
+        "location": {
+          "latitude": 39.92075481983527,
+          "longitude": 116.41794655013047,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "美食;咖啡厅",
+        "parentProviderId": "5bb8ca59fda4ed69715e80b5",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "王府井大街138号北京APML141（一楼沿步行街店铺）",
+        "categories": [
+          "美食",
+          "咖啡厅"
+        ],
+        "openingHours": "07:30-22:00",
+        "telephone": "13386151664",
+        "indoorFloor": "F1",
+        "brand": "% Arabica阿拉比卡咖啡",
+        "priceText": "34.4",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=caeacbf91b96147a06fef586&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.92129319727825,
+          "longitude": 116.41916543841933,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 5
+      },
+      "classifiedPoiTag": "美食;咖啡厅",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "cb8997756a428a7136b06cea",
+        "name": "星巴克(北京王府井in88店)",
+        "location": {
+          "latitude": 39.92208972129326,
+          "longitude": 116.41876858950266,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "美食;咖啡厅",
+        "parentProviderId": "c4b6285a23e57865e507383e",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "北京市东城区王府井大街88号1幢一层L111单元",
+        "categories": [
+          "美食",
+          "咖啡厅"
+        ],
+        "openingHours": "06:30-22:00",
+        "telephone": "(010)59785383",
+        "brand": "星巴克",
+        "priceText": "28.0",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=cb8997756a428a7136b06cea&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.92258893270627,
+          "longitude": 116.41837257554299,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 5
+      },
+      "classifiedPoiTag": "美食;咖啡厅",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "583c2b2611a3068ff8f0cb55",
+        "name": "十王府Salon Ten(王府中环店)",
+        "location": {
+          "latitude": 39.9188750952156,
+          "longitude": 116.41687397335157,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "美食;咖啡厅",
+        "parentProviderId": "1217cdb42ecb9e01c51b75e9",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "王府井大街269号王府中环F3层",
+        "categories": [
+          "美食",
+          "咖啡厅"
+        ],
+        "openingHours": "10:00-22:00",
+        "indoorFloor": "F3",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=583c2b2611a3068ff8f0cb55&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.91934643670926,
+          "longitude": 116.41603811781606,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 4.5
+      },
+      "classifiedPoiTag": "美食;咖啡厅",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "14ef24c1a5c2a3ec2ce67b3b",
+        "name": "真理咖啡",
+        "location": {
+          "latitude": 39.923626841764744,
+          "longitude": 116.4193518592703,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "美食;咖啡厅",
+        "parentProviderId": "2ea5ad86d60de21048cc4ab2",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "王府井大街74号",
+        "categories": [
+          "美食",
+          "咖啡厅"
+        ],
+        "openingHours": "10:30-17:30",
+        "telephone": "18801034123",
+        "priceText": "32.4",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=14ef24c1a5c2a3ec2ce67b3b&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.923610511036834,
+          "longitude": 116.41902660332649,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 4.4
+      },
+      "classifiedPoiTag": "美食;咖啡厅",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "1cf613c7614e0bdf4151c0b8",
+        "name": "普瑞轩茶空间(王府井店)",
+        "location": {
+          "latitude": 39.91967658710207,
+          "longitude": 116.41519863357546,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "parentProviderId": "7b9a3819b5c616e7c4f02510",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "北京市东城区王府井西街9号",
+        "categories": [
+          "美食",
+          "茶座",
+          "休闲娱乐",
+          "茶馆"
+        ],
+        "openingHours": "09:00-24:00",
+        "telephone": "13911509003",
+        "priceText": "118.8",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=1cf613c7614e0bdf4151c0b8&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.91948125799546,
+          "longitude": 116.41491768971298,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 5
+      },
+      "classifiedPoiTag": "休闲娱乐;茶馆",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "4a320f697e536ec11ef74d82",
+        "name": "岩上旗舰店·茶室·茶礼(北京王府井店)",
+        "location": {
+          "latitude": 39.92130658781865,
+          "longitude": 116.41985032899778,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "parentProviderId": "04512653a23d2b2ceb1e9716",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "王府井东街8号岩上(澳门中心北门)",
+        "categories": [
+          "美食",
+          "茶座",
+          "休闲娱乐",
+          "茶馆"
+        ],
+        "openingHours": "10:00-22:00",
+        "telephone": "18614250618",
+        "priceText": "130.4",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=4a320f697e536ec11ef74d82&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.9209899691646,
+          "longitude": 116.42015984177819,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 4.6
+      },
+      "classifiedPoiTag": "休闲娱乐;茶馆",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "9d5f3ff025169a6342e192a8",
+        "name": "缘润轩",
+        "location": {
+          "latitude": 39.9255724877332,
+          "longitude": 116.41478963507676,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "北京市东城区丰富胡同11号",
+        "categories": [
+          "美食",
+          "茶座",
+          "休闲娱乐",
+          "茶馆"
+        ],
+        "openingHours": "10:00-22:00",
+        "telephone": "15011502467",
+        "priceText": "200.0",
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=9d5f3ff025169a6342e192a8&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.925597340707085,
+          "longitude": 116.41530506876482,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 4
+      },
+      "classifiedPoiTag": "休闲娱乐;茶馆",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    },
+    {
+      "poi": {
+        "source": "real",
+        "provider": "baidu",
+        "providerId": "969d3ec05f64a84084420efe",
+        "name": "北京万豪行政公寓-茶室",
+        "location": {
+          "latitude": 39.91620859846842,
+          "longitude": 116.41544773369337,
+          "coordinateSystem": "BD-09"
+        },
+        "classifiedPoiTag": "休闲娱乐;茶馆",
+        "parentProviderId": "e6144a35da83f5c02202204c",
+        "detailSource": "place-search-v3",
+        "detailExpiresAt": 1790599827174,
+        "address": "北京市东城区霞公府街3号北门",
+        "categories": [
+          "美食",
+          "茶座",
+          "休闲娱乐",
+          "茶馆"
+        ],
+        "detailUrl": "https://api.map.baidu.com/place/detail?uid=969d3ec05f64a84084420efe&output=html&source=placeapi_v3",
+        "navigationLocation": {
+          "latitude": 39.916205614621525,
+          "longitude": 116.41531274730964,
+          "coordinateSystem": "BD-09"
+        },
+        "rating": 5
+      },
+      "classifiedPoiTag": "休闲娱乐;茶馆",
+      "goalMatch": "S",
+      "sourceLayer": "S",
+      "tagValidation": "matched",
+      "matchedSearchCategories": [],
+      "discoveryPriority": "high"
+    }
+  ],
+  "edges": [
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "name": "王府井商业街周边（公开演示起点）",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "8f1bceaa3551bf1b2fb96dd9",
+        "location": {
+          "latitude": 39.921024582854166,
+          "longitude": 116.41852847243985,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 33,
+      "walkingDurationSeconds": 28,
+      "walkingMinutes": 1,
+      "distanceMeters": 33,
+      "durationSeconds": 28,
+      "durationMinutes": 0.4666666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "name": "王府井商业街周边（公开演示起点）",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "caeacbf91b96147a06fef586",
+        "location": {
+          "latitude": 39.92075481983527,
+          "longitude": 116.41794655013047,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 39,
+      "walkingDurationSeconds": 33,
+      "walkingMinutes": 1,
+      "distanceMeters": 39,
+      "durationSeconds": 33,
+      "durationMinutes": 0.55
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "name": "王府井商业街周边（公开演示起点）",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "cb8997756a428a7136b06cea",
+        "location": {
+          "latitude": 39.92208972129326,
+          "longitude": 116.41876858950266,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 175,
+      "walkingDurationSeconds": 199,
+      "walkingMinutes": 4,
+      "distanceMeters": 175,
+      "durationSeconds": 199,
+      "durationMinutes": 3.316666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "name": "王府井商业街周边（公开演示起点）",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "583c2b2611a3068ff8f0cb55",
+        "location": {
+          "latitude": 39.9188750952156,
+          "longitude": 116.41687397335157,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 246,
+      "walkingDurationSeconds": 210,
+      "walkingMinutes": 4,
+      "distanceMeters": 246,
+      "durationSeconds": 210,
+      "durationMinutes": 3.5
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "name": "王府井商业街周边（公开演示起点）",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "14ef24c1a5c2a3ec2ce67b3b",
+        "location": {
+          "latitude": 39.923626841764744,
+          "longitude": 116.4193518592703,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 436,
+      "walkingDurationSeconds": 403,
+      "walkingMinutes": 7,
+      "distanceMeters": 436,
+      "durationSeconds": 403,
+      "durationMinutes": 6.716666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "caeacbf91b96147a06fef586",
+        "location": {
+          "latitude": 39.92075481983527,
+          "longitude": 116.41794655013047,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 490,
+      "walkingDurationSeconds": 449,
+      "walkingMinutes": 8,
+      "distanceMeters": 490,
+      "durationSeconds": 449,
+      "durationMinutes": 7.483333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "caeacbf91b96147a06fef586",
+        "location": {
+          "latitude": 39.92075481983527,
+          "longitude": 116.41794655013047,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1073,
+      "walkingDurationSeconds": 1018,
+      "walkingMinutes": 17,
+      "distanceMeters": 1073,
+      "durationSeconds": 1018,
+      "durationMinutes": 16.966666666666665
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "8f1bceaa3551bf1b2fb96dd9",
+        "location": {
+          "latitude": 39.921024582854166,
+          "longitude": 116.41852847243985,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 556,
+      "walkingDurationSeconds": 505,
+      "walkingMinutes": 9,
+      "distanceMeters": 556,
+      "durationSeconds": 505,
+      "durationMinutes": 8.416666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "8f1bceaa3551bf1b2fb96dd9",
+        "location": {
+          "latitude": 39.921024582854166,
+          "longitude": 116.41852847243985,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1323,
+      "walkingDurationSeconds": 1260,
+      "walkingMinutes": 21,
+      "distanceMeters": 1323,
+      "durationSeconds": 1260,
+      "durationMinutes": 21
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "cb8997756a428a7136b06cea",
+        "location": {
+          "latitude": 39.92208972129326,
+          "longitude": 116.41876858950266,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1041,
+      "walkingDurationSeconds": 979,
+      "walkingMinutes": 17,
+      "distanceMeters": 1041,
+      "durationSeconds": 979,
+      "durationMinutes": 16.316666666666666
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "cb8997756a428a7136b06cea",
+        "location": {
+          "latitude": 39.92208972129326,
+          "longitude": 116.41876858950266,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 704,
+      "walkingDurationSeconds": 662,
+      "walkingMinutes": 12,
+      "distanceMeters": 704,
+      "durationSeconds": 662,
+      "durationMinutes": 11.033333333333333
+    }
+  ],
+  "requests": {
+    "search": 1,
+    "routes": 11
+  },
+  "query": [
+    "咖啡厅",
+    "书咖",
+    "茶馆"
+  ],
+  "radius": 600
+}

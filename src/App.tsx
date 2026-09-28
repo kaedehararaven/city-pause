@@ -1,7 +1,6 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BaiduMap } from "./map/BaiduMap";
 import { Planner } from "./Planner";
-import { PublicReplay } from "./PublicReplay";
 import { prepareRealPlan } from "./map/prepareRealPlan";
 import type { GoalRefreshDiscovery, GoalSupplyPolicy } from "./recommendation/goalCandidateSupply";
 import type { ReturnMode, UserIntent } from "./recommendation/model";
@@ -16,7 +15,19 @@ export function App() {
   const [showMapProbe, setShowMapProbe] = useState(false);
   const [mapMounted, setMapMounted] = useState(false);
   const [planning, setPlanning] = useState(false);
-  const showReplay = new URLSearchParams(window.location.search).get("replay") === "1";
+  const auditEnabled = import.meta.env.DEV && new URLSearchParams(window.location.search).get("audit") === "1";
+  const [source, setSource] = useState<"real" | "replay">(() => new URLSearchParams(window.location.search).get("replay") === "1" ? "replay" : "real");
+  const [scenario, setScenario] = useState<"compact" | "original">("compact");
+  const [demo, setDemo] = useState<typeof import("./PublicReplay") | null>(null);
+  const [demoError, setDemoError] = useState(false);
+  useEffect(() => {
+    if (source !== "replay" || demo) return;
+    let disposed = false;
+    setDemoError(false);
+    void import("./PublicReplay").then(module => { if (!disposed) setDemo(module); })
+      .catch(() => { if (!disposed) setDemoError(true); });
+    return () => { disposed = true; };
+  }, [source, demo]);
   const [discovery, setDiscovery] = useState<DiscoverySnapshot | null>(null);
   const discoveryRef = useRef<DiscoverySnapshot | null>(null);
   const refreshRef = useRef<GoalRefreshDiscovery | undefined>(undefined);
@@ -84,12 +95,14 @@ export function App() {
   }, []);
 
   return <>
-    <nav className="map-development-access" aria-label="体验方式">
-      <a href={showReplay ? "/" : "/?replay=1"}>{showReplay ? "返回推荐" : "公开区域历史案例（离线）"}</a>
-    </nav>
-    {showReplay && <PublicReplay />}
-    <div hidden={showReplay}>
+    <div>
     <Planner
+      source={source}
+      onSourceChange={setSource}
+      sourceRevision={`${source}:${scenario}`}
+      sourcePending={source === "replay" && !demo}
+      sourceOptions={source === "replay" && (demo ? <demo.ReplayOptions scenario={scenario} onChange={setScenario} /> : <p role="status">{demoError ? "样本库加载失败，请切回真实模式后重试。" : "正在加载真实样本库…"}</p>)}
+      replay={source === "replay" && demo ? demo.replayConfiguration(scenario) : undefined}
       onStageChange={setPlanning}
       onSearchPolicyChange={receivePolicy}
       returnMode={returnMode}
@@ -102,7 +115,7 @@ export function App() {
         ? `${discovery.origin.name} · ${discovery.result.candidates.length} 个真实候选${discovery.result.status === "partial_success" ? "（详情服务部分失败，仅使用已验证候选）" : discovery.result.status === "error" ? "（服务失败，请重试）" : ""}；生成时查询所需路线。`
         : "点击生成时会自动定位，并按当前目标发现真实候选。"}
     />
-    <section className="map-development-access" hidden={!planning}>
+    <section className="map-development-access" hidden={!auditEnabled || !planning || source === "replay"}>
       <button type="button" onClick={() => { setMapMounted(true); setShowMapProbe(value => !value); }}>
         {showMapProbe ? "收起真实地图" : "打开真实地图与附近地点"}
       </button>

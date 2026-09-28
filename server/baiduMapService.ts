@@ -1,6 +1,7 @@
 export type FetchLike = typeof fetch;
 
 export type TemporaryWalkingRoute = {
+  geometry?: Array<Array<{ longitude: number; latitude: number; coordinateSystem: "BD-09" }>>;
   source: "baidu-direction-v2-walking";
   coordinateSystem: "BD-09";
   walkingDistanceMeters: number;
@@ -166,6 +167,14 @@ export function adaptWalkingRoute(payload: unknown): TemporaryWalkingRoute {
   }
 
   const rawSteps = Array.isArray(route.steps) ? route.steps : [];
+  const geometry = rawSteps.flatMap(step => {
+    if (!isObject(step) || typeof step.path !== "string") return [];
+    const tokens = step.path.split(";").filter(Boolean);
+    if (tokens.length < 2 || tokens.length > 20000) return [];
+    const points = tokens.map(token => token.split(",").map(Number));
+    if (points.some(p => p.length !== 2 || !Number.isFinite(p[0]) || Math.abs(p[0]) > 180 || !Number.isFinite(p[1]) || Math.abs(p[1]) > 90)) return [];
+    return [points.map(([longitude, latitude]) => ({ longitude, latitude, coordinateSystem: "BD-09" as const }))];
+  });
   const steps = rawSteps.flatMap((value) => {
     if (!isObject(value)) return [];
     const stepDistance = finiteNonNegative(value.distance);
@@ -193,6 +202,7 @@ export function adaptWalkingRoute(payload: unknown): TemporaryWalkingRoute {
       new Set(rawSteps.filter(isObject).flatMap(fieldTypes)),
     ).sort(),
     steps: steps.length ? steps : undefined,
+    ...(geometry.length ? { geometry } : {}),
   };
 }
 

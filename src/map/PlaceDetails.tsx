@@ -64,14 +64,14 @@ export function PlaceDetails({ poi, offline = false }: { poi: MapPOI; offline?: 
         <p>百度评分：{detail.rating === undefined ? "暂无信息" : `${detail.rating} / 5`}</p>
         <p>联系电话：{detail.telephone ?? "暂无信息"}</p>
         <p>品牌：{detail.brand ?? "暂无信息"}</p>
-        <p>商户价格（百度原文）：{detail.priceText ?? "暂无信息"}</p>
-        {detail.priceText && <p>计价口径以商户为准，不代表本次花费或门票。</p>}
+        <p>百度商户价格：{detail.priceText ?? "暂无信息"}</p>
+
         <p>最佳游玩时间：{detail.bestVisitTime ?? "暂无信息"}</p>
         {detail.detailUrl && <p><a href={detail.detailUrl} target="_blank" rel="noopener noreferrer">查看百度地点详情 ↗</a></p>}
-        <p>导航引导点：{detail.navigationLocation ? "百度已提供；本次路线终点尚未按此调整。" : "暂无信息"}</p>
+        {detail.navigationLocation && <p>导航参考位置</p>}
         {!offline && detail.navigationLocation && <LocationPreview location={detail.navigationLocation} name={`${poi.name}导航引导点`} />}
-        <h4>子地点与出入口</h4>
-        {detail.subPlaces?.length ? <p>百度关联资料可能包含周边停车场，不保证全部位于场所内。</p> : null}
+        <h4>相关地点与出入口</h4>
+
         {detail.subPlaces?.length ? <ul>{detail.subPlaces.map(child => <li key={child.providerId}>
           <strong>{child.name}</strong>
           {child.categories?.length ? <span> · {child.categories.join(" / ")}</span> : null}
@@ -80,9 +80,9 @@ export function PlaceDetails({ poi, offline = false }: { poi: MapPOI; offline?: 
           {!offline && child.location && <LocationPreview location={child.location} name={child.name} />}
         </li>)}</ul> : <p>暂无子地点或出入口资料。</p>}
         {detail.indoorFloor && <p>楼层：{detail.indoorFloor}</p>}
-        {detail.suggestedVisitDuration && <p>百度建议游览时长：{detail.suggestedVisitDuration}（不代表本次安排）</p>}
+        {detail.suggestedVisitDuration && <p>百度建议游览时长：{detail.suggestedVisitDuration}</p>}
         {detail.description && <p>{detail.description}</p>}
-        <p>百度地点资料，非实时营业或座位保证。</p>
+
       </>}
       {status === "error" && <p role="status">详情暂不可用，路线方案仍可查看。<button type="button" onClick={() => void load()}>重试详情</button></p>}
     </div>

@@ -1,0 +1,543 @@
+{
+  "origin": {
+    "id": "9650da9e8e88aa222cb17ee1",
+    "name": "南池子美术馆周边（公开演示起点）",
+    "location": {
+      "latitude": 39.920179390985325,
+      "longitude": 116.40979864966333,
+      "coordinateSystem": "BD-09"
+    }
+  },
+  "capturedAt": "2026-09-28T12:17:43.847Z",
+  "edges": [
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "bff8fa7de48300b9c8213d4d",
+        "location": {
+          "latitude": 39.92072182566944,
+          "longitude": 116.4092606544934,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 63,
+      "walkingDurationSeconds": 54,
+      "walkingMinutes": 1,
+      "distanceMeters": 63,
+      "durationSeconds": 54,
+      "durationMinutes": 0.9
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "38727728c6c88ec5c7f50daa",
+        "location": {
+          "latitude": 39.91893084786995,
+          "longitude": 116.41634055953973,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 662,
+      "walkingDurationSeconds": 624,
+      "walkingMinutes": 11,
+      "distanceMeters": 662,
+      "durationSeconds": 624,
+      "durationMinutes": 10.4
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "9ee392b869507140bbbd631d",
+        "location": {
+          "latitude": 39.91479243779711,
+          "longitude": 116.40996025482457,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 563,
+      "walkingDurationSeconds": 482,
+      "walkingMinutes": 9,
+      "distanceMeters": 563,
+      "durationSeconds": 482,
+      "durationMinutes": 8.033333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 906,
+      "walkingDurationSeconds": 806,
+      "walkingMinutes": 14,
+      "distanceMeters": 906,
+      "durationSeconds": 806,
+      "durationMinutes": 13.433333333333334
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "00d79dbf1e0f361f8f55ecf8",
+        "location": {
+          "latitude": 39.917838405700714,
+          "longitude": 116.40035440451472,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1326,
+      "walkingDurationSeconds": 1151,
+      "walkingMinutes": 20,
+      "distanceMeters": 1326,
+      "durationSeconds": 1151,
+      "durationMinutes": 19.183333333333334
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "bff8fa7de48300b9c8213d4d",
+        "location": {
+          "latitude": 39.92072182566944,
+          "longitude": 116.4092606544934,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 842,
+      "walkingDurationSeconds": 751,
+      "walkingMinutes": 13,
+      "distanceMeters": 842,
+      "durationSeconds": 751,
+      "durationMinutes": 12.516666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "38727728c6c88ec5c7f50daa",
+        "location": {
+          "latitude": 39.91893084786995,
+          "longitude": 116.41634055953973,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "b6e94c717b21a237970319b4",
+        "location": {
+          "latitude": 39.911976284990324,
+          "longitude": 116.40691886185944,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1618,
+      "walkingDurationSeconds": 1463,
+      "walkingMinutes": 25,
+      "distanceMeters": 1618,
+      "durationSeconds": 1463,
+      "durationMinutes": 24.383333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "38727728c6c88ec5c7f50daa",
+        "location": {
+          "latitude": 39.91893084786995,
+          "longitude": 116.41634055953973,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 496,
+      "walkingDurationSeconds": 453,
+      "walkingMinutes": 8,
+      "distanceMeters": 496,
+      "durationSeconds": 453,
+      "durationMinutes": 7.55
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "b6e94c717b21a237970319b4",
+        "location": {
+          "latitude": 39.911976284990324,
+          "longitude": 116.40691886185944,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "38727728c6c88ec5c7f50daa",
+        "location": {
+          "latitude": 39.91893084786995,
+          "longitude": 116.41634055953973,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1635,
+      "walkingDurationSeconds": 1478,
+      "walkingMinutes": 25,
+      "distanceMeters": 1635,
+      "durationSeconds": 1478,
+      "durationMinutes": 24.633333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "b6e94c717b21a237970319b4",
+        "location": {
+          "latitude": 39.911976284990324,
+          "longitude": 116.40691886185944,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "109bc20e7e585dda6240a982",
+        "location": {
+          "latitude": 39.91664204620119,
+          "longitude": 116.41852101650412,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1545,
+      "walkingDurationSeconds": 1350,
+      "walkingMinutes": 23,
+      "distanceMeters": 1545,
+      "durationSeconds": 1350,
+      "durationMinutes": 22.5
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "b6e94c717b21a237970319b4",
+        "location": {
+          "latitude": 39.911976284990324,
+          "longitude": 116.40691886185944,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "67e477c8e935983ff3193701",
+        "location": {
+          "latitude": 39.92630791771102,
+          "longitude": 116.41204683886315,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2219,
+      "walkingDurationSeconds": 2049,
+      "walkingMinutes": 35,
+      "distanceMeters": 2219,
+      "durationSeconds": 2049,
+      "durationMinutes": 34.15
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9650da9e8e88aa222cb17ee1",
+        "name": "南池子美术馆周边（公开演示起点）",
+        "location": {
+          "latitude": 39.920179390985325,
+          "longitude": 116.40979864966333,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "41fdc2e0585f0349b21e3600",
+        "location": {
+          "latitude": 39.919298772738294,
+          "longitude": 116.41082559252233,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 170,
+      "walkingDurationSeconds": 145,
+      "walkingMinutes": 3,
+      "distanceMeters": 170,
+      "durationSeconds": 145,
+      "durationMinutes": 2.4166666666666665
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "9ee392b869507140bbbd631d",
+        "location": {
+          "latitude": 39.91479243779711,
+          "longitude": 116.40996025482457,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "41fdc2e0585f0349b21e3600",
+        "location": {
+          "latitude": 39.919298772738294,
+          "longitude": 116.41082559252233,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 818,
+      "walkingDurationSeconds": 698,
+      "walkingMinutes": 12,
+      "distanceMeters": 818,
+      "durationSeconds": 698,
+      "durationMinutes": 11.633333333333333
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "4577566104531adfcb213d76",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "41fdc2e0585f0349b21e3600",
+        "location": {
+          "latitude": 39.919298772738294,
+          "longitude": 116.41082559252233,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1080,
+      "walkingDurationSeconds": 1002,
+      "walkingMinutes": 17,
+      "distanceMeters": 1080,
+      "durationSeconds": 1002,
+      "durationMinutes": 16.7
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "6935c938c228260d35b06c18",
+        "location": {
+          "latitude": 39.91967631041711,
+          "longitude": 116.41795930606872,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "9ee392b869507140bbbd631d",
+        "location": {
+          "latitude": 39.91479243779711,
+          "longitude": 116.40996025482457,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 850,
+      "walkingDurationSeconds": 787,
+      "walkingMinutes": 14,
+      "distanceMeters": 850,
+      "durationSeconds": 787,
+      "durationMinutes": 13.116666666666667
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "6935c938c228260d35b06c18",
+        "location": {
+          "latitude": 39.91967631041711,
+          "longitude": 116.41795930606872,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "00d79dbf1e0f361f8f55ecf8",
+        "location": {
+          "latitude": 39.917838405700714,
+          "longitude": 116.40035440451472,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 2119,
+      "walkingDurationSeconds": 1910,
+      "walkingMinutes": 32,
+      "distanceMeters": 2119,
+      "durationSeconds": 1910,
+      "durationMinutes": 31.833333333333332
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "6935c938c228260d35b06c18",
+        "location": {
+          "latitude": 39.91967631041711,
+          "longitude": 116.41795930606872,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "41fdc2e0585f0349b21e3600",
+        "location": {
+          "latitude": 39.919298772738294,
+          "longitude": 116.41082559252233,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 919,
+      "walkingDurationSeconds": 864,
+      "walkingMinutes": 15,
+      "distanceMeters": 919,
+      "durationSeconds": 864,
+      "durationMinutes": 14.4
+    },
+    {
+      "status": "success",
+      "source": "real",
+      "provider": "baidu",
+      "mode": "walking",
+      "from": {
+        "id": "41fdc2e0585f0349b21e3600",
+        "location": {
+          "latitude": 39.919298772738294,
+          "longitude": 116.41082559252233,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "to": {
+        "id": "4577566104531adfcb213d76",
+        "location": {
+          "latitude": 39.92111159849176,
+          "longitude": 116.41757833470194,
+          "coordinateSystem": "BD-09"
+        }
+      },
+      "coordinateSystem": "BD-09",
+      "walkingDistanceMeters": 1080,
+      "walkingDurationSeconds": 982,
+      "walkingMinutes": 17,
+      "distanceMeters": 1080,
+      "durationSeconds": 982,
+      "durationMinutes": 16.366666666666667
+    }
+  ],
+  "requests": 18
+}

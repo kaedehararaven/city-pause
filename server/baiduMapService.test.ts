@@ -8,6 +8,12 @@ import {
 } from "./baiduMapService.js";
 
 describe("adaptWalkingRoute", () => {
+  it("retains actual BD09 step paths and rejects malformed geometry without inventing connections", () => {
+    const adapted = adaptWalkingRoute({ status: 0, result: { routes: [{ distance: 100, duration: 90,
+      steps: [{ path: "116.4,39.9;116.41,39.91", distance: 50, duration: 45 }, { path: "garbage" }, { path: "181,39;116,39" }] }] } });
+    expect(adapted.geometry).toEqual([[{ longitude: 116.4, latitude: 39.9, coordinateSystem: "BD-09" }, { longitude: 116.41, latitude: 39.91, coordinateSystem: "BD-09" }]]);
+    expect(adapted.walkingDurationSeconds).toBe(90);
+  });
   it("keeps provider units and rounds walking minutes upward", () => {
     expect(
       adaptWalkingRoute({

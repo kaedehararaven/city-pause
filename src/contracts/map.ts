@@ -62,6 +62,7 @@ type RouteResultBase = {
 export type RouteMetrics = { distanceMeters: number; durationSeconds: number; durationMinutes: number };
 export type SuccessfulRouteResult = RouteResultBase & {
   status: "success";
+  geometry?: MapLocation[][];
 } & (({
   mode: "walking";
   walkingDistanceMeters: number;

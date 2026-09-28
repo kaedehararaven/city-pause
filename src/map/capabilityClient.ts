@@ -2,6 +2,7 @@ import type { RouteEndpoint, RouteResult } from "../contracts/map";
 import { walkingMinutesFromSeconds, validRouteMetrics } from "../contracts/map";
 
 type WalkingRoutePayload = {
+  geometry?: import("../contracts/map").MapLocation[][];
   source: "baidu-direction-v2-walking";
   coordinateSystem: "BD-09";
   walkingDistanceMeters: number;
@@ -149,6 +150,7 @@ export async function fetchWalkingRoute(input: {
       distanceMeters: payload.walkingDistanceMeters,
       durationSeconds: payload.walkingDurationSeconds,
       durationMinutes: payload.walkingDurationSeconds / 60,
+      ...(payload.geometry ? { geometry: payload.geometry } : {}),
     };
   } catch (error) {
     return {
