@@ -29,6 +29,9 @@ for (const file of await collectTextFiles(clientOutput)) {
   if (forbiddenValues.some((value) => contents.includes(value))) {
     throw new Error(`Server-only configuration found in client output: ${file}`);
   }
+  if (/https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?\/api\b/i.test(contents)) {
+    throw new Error(`Local API URL found in client output: ${file}`);
+  }
 }
 
 console.log("Client bundle contains no server-only AK configuration.");

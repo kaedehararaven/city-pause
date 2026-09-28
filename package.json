@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "node server-dist/production.js",
     "dev": "concurrently -k -n backend,frontend -c cyan,magenta \"tsx watch server/index.ts\" \"vite --host 127.0.0.1 --port 5173\"",
     "dev:client": "vite --host 127.0.0.1 --port 5173",
     "dev:server": "tsx watch server/index.ts",

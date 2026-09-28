@@ -1,5 +1,9 @@
 # 城市暂停键
 
+## Sealos 容器部署
+
+单个 Node 进程同时提供网页与 API，GitHub Actions 在 `main` 更新后发布 GHCR 镜像。配置方法见 [Sealos 部署说明](docs/SEALOS_DEPLOYMENT.md)。
+
 ## Vercel 部署
 
 Vite 前端与 `/api/*` Node Function 可部署在同一个项目，见 [Vercel 部署说明](docs/VERCEL_DEPLOYMENT.md)。Makers 入口同时保留。
