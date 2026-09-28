@@ -1,5 +1,6 @@
 name: Publish production container
 on:
+  workflow_dispatch:
   push:
     branches: [main]
 permissions:
