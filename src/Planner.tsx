@@ -81,8 +81,8 @@ export function Planner({
   const currentSource = source ?? (replay ? "replay" : "real");
   const [minutes, setMinutes] = useState(currentSource === "replay" ? "90" : "30");
   const [activity, setActivity] = useState<Activity>("rest");
-  const [avoidCost, setAvoidCost] = useState(false);
-  const [nearby, setNearby] = useState(false);
+  const avoidCost = false;
+  const nearby = false;
   const [generating, setGenerating] = useState(false);
   const generationRef = useRef(0);
   const multiAbort = useRef<AbortController | null>(null);
@@ -235,7 +235,7 @@ export function Planner({
           <fieldset><legend><label htmlFor="planner-data-source">出走地点</label></legend><select id="planner-data-source" className="source-select" value={currentSource} onChange={event => { changed(); setPlans(null); setAudit(null); onSourceChange?.(event.target.value as "real" | "replay"); }}><option value="replay">Demo · 公开区域历史案例</option><option value="real">我附近的地点</option></select>{auditEnabled && <p className="fine source-note">{realMessage}</p>}{sourceOptions}</fieldset>
           <fieldset><legend>有多久空闲？</legend><div className="times">{[30,45,60].map(value => <button key={value} type="button" className={minutes === String(value) ? "active" : ""} aria-pressed={minutes === String(value)} onClick={() => { setMinutes(String(value)); changed(); }}>{value}<small>分钟</small></button>)}</div><div className="custom"><label htmlFor="planner-minutes">更多时间</label><select id="planner-minutes" value={Number(minutes) > 60 ? minutes : ""} onChange={event => { setMinutes(event.target.value); changed(); }}><option value="" disabled>60 分钟以上</option>{[90,120,150,180].map(value => <option key={value} value={value}>{value} 分钟</option>)}</select></div></fieldset>
           <fieldset><legend>现在更想……</legend><div className="moods">{activities.map(([value,label]) => <button key={value} type="button" className={activity === value ? "active" : ""} aria-pressed={activity === value} onClick={() => { setActivity(value); changed(); }}>{label}</button>)}</div></fieldset>
-          <div className="preferences"><label><input type="checkbox" checked={avoidCost} onChange={event => { setAvoidCost(event.target.checked); changed(); }}/> 不想花钱</label><label><input type="checkbox" checked={nearby} onChange={event => { setNearby(event.target.checked); changed(); }}/> 少走一点</label></div><label className="return-row"><input type="checkbox" checked={returnMode === "return_to_start"} onChange={event => { onReturnModeChange(event.target.checked ? "return_to_start" : "open_ended"); changed(); }}/><span>最后回到这里<small>默认无需返回起点；勾选后计入返程</small></span><span aria-hidden="true">↩</span></label>
+          <label className="return-row"><input type="checkbox" checked={returnMode === "return_to_start"} onChange={event => { onReturnModeChange(event.target.checked ? "return_to_start" : "open_ended"); changed(); }}/><span>最后回到这里<small>默认无需返回起点；勾选后计入返程</small></span><span aria-hidden="true">↩</span></label>
           {error && <p className="error" role="alert">{error}</p>}<button type="submit" className="primary" disabled={sourcePending || generating || multiLoading}>{sourcePending ? "正在加载样本库…" : generating ? "正在核对路线…" : multiLoading ? "正在核对多地点路线…" : "看看我的暂停方案"} <span>→</span></button>
         </form>
       </section>
